@@ -10,7 +10,7 @@
 
 RCT_EXPORT_MODULE()
 
-@property (NSString*) test
+//@property (NSString*) test
 
 RCT_REMAP_METHOD(testGetStrProm,
                  resolver:(RCTPromiseResolveBlock)resolve

@@ -14,6 +14,7 @@
 		CEEA0B9F1F4500FE00DE517B /* libLibTiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */; };
 		CEEA0BA01F4500FE00DE517B /* libPDFWriter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */; };
 		CEEA0BA11F4500FE00DE517B /* libZlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9C1F4500FE00DE517B /* libZlib.a */; };
+		CEEA0BA31F45042300DE517B /* RNPDFWriter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEEA0BA21F45042300DE517B /* RNPDFWriter.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibTiff.a; path = lib/universal/libLibTiff.a; sourceTree = "<group>"; };
 		CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPDFWriter.a; path = lib/universal/libPDFWriter.a; sourceTree = "<group>"; };
 		CEEA0B9C1F4500FE00DE517B /* libZlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZlib.a; path = lib/universal/libZlib.a; sourceTree = "<group>"; };
+		CEEA0BA21F45042300DE517B /* RNPDFWriter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNPDFWriter.mm; sourceTree = "<group>"; };
+		CEEA0BA41F45043200DE517B /* RNPDFWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPDFWriter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				CEEA0BA41F45043200DE517B /* RNPDFWriter.h */,
+				CEEA0BA21F45042300DE517B /* RNPDFWriter.mm */,
 				CEEA0B5B1F44F70800DE517B /* RNPdfLib.h */,
 				CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */,
 				B3E7B5881CC2AC0600A0062D /* RNReactNativePdfLib.h */,
@@ -147,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEEA0B5A1F44F6FD00DE517B /* RNPdfLib.mm in Sources */,
+				CEEA0BA31F45042300DE517B /* RNPDFWriter.mm in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* RNReactNativePdfLib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
