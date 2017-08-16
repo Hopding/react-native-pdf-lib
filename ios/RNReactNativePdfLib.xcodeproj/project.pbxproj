@@ -8,16 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* RNReactNativePdfLib.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNReactNativePdfLib.m */; };
+		CEEA0B5A1F44F6FD00DE517B /* RNPdfLib.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */; };
+		CEEA0B9D1F4500FE00DE517B /* libFreeType.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B981F4500FE00DE517B /* libFreeType.a */; };
+		CEEA0B9E1F4500FE00DE517B /* libLibJpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B991F4500FE00DE517B /* libLibJpeg.a */; };
+		CEEA0B9F1F4500FE00DE517B /* libLibTiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */; };
+		CEEA0BA01F4500FE00DE517B /* libPDFWriter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */; };
+		CEEA0BA11F4500FE00DE517B /* libZlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9C1F4500FE00DE517B /* libZlib.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		58B511D91A9E6C8500147676 /* CopyFiles */ = {
+		58B511D91A9E6C8500147676 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -26,6 +33,13 @@
 		134814201AA4EA6300B7C361 /* libRNReactNativePdfLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNReactNativePdfLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* RNReactNativePdfLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNReactNativePdfLib.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* RNReactNativePdfLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNReactNativePdfLib.m; sourceTree = "<group>"; };
+		CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNPdfLib.mm; sourceTree = "<group>"; };
+		CEEA0B5B1F44F70800DE517B /* RNPdfLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPdfLib.h; sourceTree = "<group>"; };
+		CEEA0B981F4500FE00DE517B /* libFreeType.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFreeType.a; path = lib/universal/libFreeType.a; sourceTree = "<group>"; };
+		CEEA0B991F4500FE00DE517B /* libLibJpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibJpeg.a; path = lib/universal/libLibJpeg.a; sourceTree = "<group>"; };
+		CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibTiff.a; path = lib/universal/libLibTiff.a; sourceTree = "<group>"; };
+		CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPDFWriter.a; path = lib/universal/libPDFWriter.a; sourceTree = "<group>"; };
+		CEEA0B9C1F4500FE00DE517B /* libZlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZlib.a; path = lib/universal/libZlib.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +47,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEEA0B9D1F4500FE00DE517B /* libFreeType.a in Frameworks */,
+				CEEA0B9E1F4500FE00DE517B /* libLibJpeg.a in Frameworks */,
+				CEEA0B9F1F4500FE00DE517B /* libLibTiff.a in Frameworks */,
+				CEEA0BA01F4500FE00DE517B /* libPDFWriter.a in Frameworks */,
+				CEEA0BA11F4500FE00DE517B /* libZlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,10 +69,25 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				CEEA0B5B1F44F70800DE517B /* RNPdfLib.h */,
+				CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */,
 				B3E7B5881CC2AC0600A0062D /* RNReactNativePdfLib.h */,
 				B3E7B5891CC2AC0600A0062D /* RNReactNativePdfLib.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				CEEA0B971F4500FA00DE517B /* Frameworks */,
 			);
+			sourceTree = "<group>";
+		};
+		CEEA0B971F4500FA00DE517B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CEEA0B981F4500FE00DE517B /* libFreeType.a */,
+				CEEA0B991F4500FE00DE517B /* libLibJpeg.a */,
+				CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */,
+				CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */,
+				CEEA0B9C1F4500FE00DE517B /* libZlib.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,7 +99,7 @@
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
-				58B511D91A9E6C8500147676 /* CopyFiles */,
+				58B511D91A9E6C8500147676 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -112,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEEA0B5A1F44F6FD00DE517B /* RNPdfLib.mm in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* RNReactNativePdfLib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,12 +232,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-				"$(inherited)",
+					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/lib/include/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib/universal",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNReactNativePdfLib;
 				SKIP_INSTALL = YES;
@@ -217,8 +256,12 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/lib/include/**",
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lib/universal",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = RNReactNativePdfLib;
 				SKIP_INSTALL = YES;

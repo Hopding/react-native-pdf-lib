@@ -7,5 +7,11 @@
 
 @interface RNReactNativePdfLib : NSObject <RCTBridgeModule>
 
++ (void) testLog;
+
++ (void) letsTryAgain;
+
++ (NSString*) oneLastTime;
+
 @end
   
