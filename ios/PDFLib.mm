@@ -1,5 +1,4 @@
-#import "RNReactNativePdfLib.h"
-#import "RNPDFWriter.h"
+#import "PDFLib.h"
 
 #include <PDFWriter.h>
 #include <PDFPage.h>
@@ -12,23 +11,22 @@
 #import "RCTEventDispatcher.h"
 #endif
 
-@implementation RNPDFWriter
+@implementation PDFLib
+
++ (NSString*) documentsDir
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return paths.firstObject;
+}
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(testGetStr:(RCTResponseSenderBlock)callback)
-{
-    callback(@[@"This is from Objective C!"]);
-}
-
-RCT_REMAP_METHOD(testPDFWriter,
+RCT_REMAP_METHOD(test,
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     // Open new PDF
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = paths.firstObject;
-    NSString *pdfPath = [NSString stringWithFormat:@"%@/%@", basePath, @"test.pdf"];
+    NSString *pdfPath = [NSString stringWithFormat:@"%@/%@", [PDFLib documentsDir], @"test.pdf"];
     PDFWriter pdfWriter;
     EStatusCode esc1 = pdfWriter.StartPDF(pdfPath.UTF8String, ePDFVersionMax);
     
@@ -79,11 +77,6 @@ RCT_REMAP_METHOD(testPDFWriter,
     }
 
     resolve(pdfPath);
-}
-
-RCT_EXPORT_METHOD(testObjCLog)
-{
-    NSLog(@"This is a log from objective c!");
 }
 
 @end

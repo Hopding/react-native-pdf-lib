@@ -7,14 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B3E7B58A1CC2AC0600A0062D /* RNReactNativePdfLib.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNReactNativePdfLib.m */; };
-		CEEA0B5A1F44F6FD00DE517B /* RNPdfLib.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */; };
 		CEEA0B9D1F4500FE00DE517B /* libFreeType.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B981F4500FE00DE517B /* libFreeType.a */; };
 		CEEA0B9E1F4500FE00DE517B /* libLibJpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B991F4500FE00DE517B /* libLibJpeg.a */; };
 		CEEA0B9F1F4500FE00DE517B /* libLibTiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */; };
 		CEEA0BA01F4500FE00DE517B /* libPDFWriter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */; };
 		CEEA0BA11F4500FE00DE517B /* libZlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9C1F4500FE00DE517B /* libZlib.a */; };
-		CEEA0BA31F45042300DE517B /* RNPDFWriter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEEA0BA21F45042300DE517B /* RNPDFWriter.mm */; };
+		CEEA0BA31F45042300DE517B /* PDFLib.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEEA0BA21F45042300DE517B /* PDFLib.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,18 +29,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		134814201AA4EA6300B7C361 /* libRNReactNativePdfLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNReactNativePdfLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5881CC2AC0600A0062D /* RNReactNativePdfLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNReactNativePdfLib.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* RNReactNativePdfLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNReactNativePdfLib.m; sourceTree = "<group>"; };
-		CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNPdfLib.mm; sourceTree = "<group>"; };
-		CEEA0B5B1F44F70800DE517B /* RNPdfLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPdfLib.h; sourceTree = "<group>"; };
+		134814201AA4EA6300B7C361 /* libRNPDFLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPDFLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEEA0B981F4500FE00DE517B /* libFreeType.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFreeType.a; path = lib/universal/libFreeType.a; sourceTree = "<group>"; };
 		CEEA0B991F4500FE00DE517B /* libLibJpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibJpeg.a; path = lib/universal/libLibJpeg.a; sourceTree = "<group>"; };
 		CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibTiff.a; path = lib/universal/libLibTiff.a; sourceTree = "<group>"; };
 		CEEA0B9B1F4500FE00DE517B /* libPDFWriter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPDFWriter.a; path = lib/universal/libPDFWriter.a; sourceTree = "<group>"; };
 		CEEA0B9C1F4500FE00DE517B /* libZlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZlib.a; path = lib/universal/libZlib.a; sourceTree = "<group>"; };
-		CEEA0BA21F45042300DE517B /* RNPDFWriter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RNPDFWriter.mm; sourceTree = "<group>"; };
-		CEEA0BA41F45043200DE517B /* RNPDFWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNPDFWriter.h; sourceTree = "<group>"; };
+		CEEA0BA21F45042300DE517B /* PDFLib.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PDFLib.mm; sourceTree = "<group>"; };
+		CEEA0BA41F45043200DE517B /* PDFLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFLib.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +58,7 @@
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				134814201AA4EA6300B7C361 /* libRNReactNativePdfLib.a */,
+				134814201AA4EA6300B7C361 /* libRNPDFLib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,12 +66,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				CEEA0BA41F45043200DE517B /* RNPDFWriter.h */,
-				CEEA0BA21F45042300DE517B /* RNPDFWriter.mm */,
-				CEEA0B5B1F44F70800DE517B /* RNPdfLib.h */,
-				CEEA0B591F44F6FD00DE517B /* RNPdfLib.mm */,
-				B3E7B5881CC2AC0600A0062D /* RNReactNativePdfLib.h */,
-				B3E7B5891CC2AC0600A0062D /* RNReactNativePdfLib.m */,
+				CEEA0BA41F45043200DE517B /* PDFLib.h */,
+				CEEA0BA21F45042300DE517B /* PDFLib.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				CEEA0B971F4500FA00DE517B /* Frameworks */,
 			);
@@ -98,9 +88,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		58B511DA1A9E6C8500147676 /* RNReactNativePdfLib */ = {
+		58B511DA1A9E6C8500147676 /* RNPdfLib */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNReactNativePdfLib" */;
+			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNPdfLib" */;
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
@@ -110,9 +100,9 @@
 			);
 			dependencies = (
 			);
-			name = RNReactNativePdfLib;
+			name = RNPdfLib;
 			productName = RCTDataManager;
-			productReference = 134814201AA4EA6300B7C361 /* libRNReactNativePdfLib.a */;
+			productReference = 134814201AA4EA6300B7C361 /* libRNPDFLib.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -129,7 +119,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNReactNativePdfLib" */;
+			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNPDFLib" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -141,7 +131,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				58B511DA1A9E6C8500147676 /* RNReactNativePdfLib */,
+				58B511DA1A9E6C8500147676 /* RNPdfLib */,
 			);
 		};
 /* End PBXProject section */
@@ -151,9 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEEA0B5A1F44F6FD00DE517B /* RNPdfLib.mm in Sources */,
-				CEEA0BA31F45042300DE517B /* RNPDFWriter.mm in Sources */,
-				B3E7B58A1CC2AC0600A0062D /* RNReactNativePdfLib.m in Sources */,
+				CEEA0BA31F45042300DE517B /* PDFLib.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +237,7 @@
 					"$(PROJECT_DIR)/lib/universal",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = RNReactNativePdfLib;
+				PRODUCT_NAME = RNPDFLib;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -269,7 +257,7 @@
 					"$(PROJECT_DIR)/lib/universal",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = RNReactNativePdfLib;
+				PRODUCT_NAME = RNPDFLib;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -277,7 +265,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNReactNativePdfLib" */ = {
+		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "RNPDFLib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58B511ED1A9E6C8500147676 /* Debug */,
@@ -286,7 +274,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNReactNativePdfLib" */ = {
+		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNPdfLib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				58B511F01A9E6C8500147676 /* Debug */,
