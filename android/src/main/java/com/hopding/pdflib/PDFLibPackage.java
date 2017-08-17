@@ -1,5 +1,5 @@
 
-package com.reactlibrary;
+package com.hopding.pdflib;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,13 +10,12 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
-public class RNReactNativePdfLibPackage implements ReactPackage {
+public class PDFLibPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new RNReactNativePdfLibModule(reactContext));
+      return Arrays.<NativeModule>asList(new PDFLibModule(reactContext));
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
       return Collections.emptyList();
     }
