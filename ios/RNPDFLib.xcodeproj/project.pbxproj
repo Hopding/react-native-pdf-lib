@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE392BAC1F466851009565BA /* BodoniFLF-Bold.ttf in Copy Files */ = {isa = PBXBuildFile; fileRef = CE392BA81F466851009565BA /* BodoniFLF-Bold.ttf */; };
+		CE392BAD1F466851009565BA /* BodoniFLF-BoldItalic.ttf in Copy Files */ = {isa = PBXBuildFile; fileRef = CE392BA91F466851009565BA /* BodoniFLF-BoldItalic.ttf */; };
+		CE392BAE1F466851009565BA /* BodoniFLF-Italic.ttf in Copy Files */ = {isa = PBXBuildFile; fileRef = CE392BAA1F466851009565BA /* BodoniFLF-Italic.ttf */; };
+		CE392BAF1F466851009565BA /* BodoniFLF-Roman.ttf in Copy Files */ = {isa = PBXBuildFile; fileRef = CE392BAB1F466851009565BA /* BodoniFLF-Roman.ttf */; };
 		CEEA0B9D1F4500FE00DE517B /* libFreeType.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B981F4500FE00DE517B /* libFreeType.a */; };
 		CEEA0B9E1F4500FE00DE517B /* libLibJpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B991F4500FE00DE517B /* libLibJpeg.a */; };
 		CEEA0B9F1F4500FE00DE517B /* libLibTiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */; };
@@ -19,9 +23,13 @@
 		58B511D91A9E6C8500147676 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				CE392BAC1F466851009565BA /* BodoniFLF-Bold.ttf in Copy Files */,
+				CE392BAD1F466851009565BA /* BodoniFLF-BoldItalic.ttf in Copy Files */,
+				CE392BAE1F466851009565BA /* BodoniFLF-Italic.ttf in Copy Files */,
+				CE392BAF1F466851009565BA /* BodoniFLF-Roman.ttf in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -30,6 +38,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNPDFLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPDFLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE392BA81F466851009565BA /* BodoniFLF-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BodoniFLF-Bold.ttf"; path = "assets/bodoni/BodoniFLF-Bold.ttf"; sourceTree = "<group>"; };
+		CE392BA91F466851009565BA /* BodoniFLF-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BodoniFLF-BoldItalic.ttf"; path = "assets/bodoni/BodoniFLF-BoldItalic.ttf"; sourceTree = "<group>"; };
+		CE392BAA1F466851009565BA /* BodoniFLF-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BodoniFLF-Italic.ttf"; path = "assets/bodoni/BodoniFLF-Italic.ttf"; sourceTree = "<group>"; };
+		CE392BAB1F466851009565BA /* BodoniFLF-Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "BodoniFLF-Roman.ttf"; path = "assets/bodoni/BodoniFLF-Roman.ttf"; sourceTree = "<group>"; };
 		CEEA0B981F4500FE00DE517B /* libFreeType.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFreeType.a; path = lib/universal/libFreeType.a; sourceTree = "<group>"; };
 		CEEA0B991F4500FE00DE517B /* libLibJpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibJpeg.a; path = lib/universal/libLibJpeg.a; sourceTree = "<group>"; };
 		CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibTiff.a; path = lib/universal/libLibTiff.a; sourceTree = "<group>"; };
@@ -66,6 +78,10 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				CE392BA81F466851009565BA /* BodoniFLF-Bold.ttf */,
+				CE392BA91F466851009565BA /* BodoniFLF-BoldItalic.ttf */,
+				CE392BAA1F466851009565BA /* BodoniFLF-Italic.ttf */,
+				CE392BAB1F466851009565BA /* BodoniFLF-Roman.ttf */,
 				CEEA0BA41F45043200DE517B /* PDFLib.h */,
 				CEEA0BA21F45042300DE517B /* PDFLib.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,

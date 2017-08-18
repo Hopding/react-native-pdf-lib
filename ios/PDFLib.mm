@@ -13,36 +13,75 @@
 
 @implementation PDFLib
 
-+ (NSString*) documentsDir
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    return paths.firstObject;
-}
-
 RCT_EXPORT_MODULE()
 
+RCT_REMAP_METHOD(createPDF,
+                 :(NSString*)path
+                 :(NSDictionary*)pdfTemplate
+                 :(RCTPromiseResolveBlock)resolve
+                 :(RCTPromiseRejectBlock)reject)
+{
+    NSLog(@"Saving PDF to path: %@", path);
+    NSArray *pages = pdfTemplate[@"pages"];
+    
+    // Open new PDF
+    PDFWriter pdfWriter;
+    EStatusCode esc1 = pdfWriter.StartPDF(path.UTF8String, ePDFVersionMax);
+    if (esc1 == EStatusCode::eFailure) {
+        reject(@"error", @"pdfWriter.StartPDF FAILED!!!!", nil);
+    }
+    
+    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"BodoniFLF-Bold" ofType:@".ttf"];
+    PDFUsedFont *font = pdfWriter.GetFontForFile(fontPath.UTF8String);
+    for(NSDictionary *pageDict in pages)
+    {
+        PDFPage *page = new PDFPage();
+        page->SetMediaBox(PDFRectangle(0, 0, 595, 842));
+        PageContentContext *contentContext = pdfWriter.StartPageContentContext(page);
+        AbstractContentContext::TextOptions textOptions(font, 14, AbstractContentContext::eGray, 0);
+        NSString *text = pageDict[@"text"];
+        contentContext->WriteText(10, 100, text.UTF8String, textOptions);
+        
+        pdfWriter.EndPageContentContext(contentContext);
+        pdfWriter.WritePageAndRelease(page);
+    }
+    // Close PDF
+    EStatusCode esc2 = pdfWriter.EndPDF();
+    if (esc2 == EStatusCode::eFailure) {
+        reject(@"error", @"pdfWriter.EndPDF FAILED!!!", nil);
+    }
+    
+    resolve(path);
+}
+
 RCT_REMAP_METHOD(test,
+                 :(NSString*)text
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDir = paths.firstObject;
+    
     // Open new PDF
-    NSString *pdfPath = [NSString stringWithFormat:@"%@/%@", [PDFLib documentsDir], @"test.pdf"];
+    NSString *pdfPath = [NSString stringWithFormat:@"%@/%@", documentsDir, @"test.pdf"];
     PDFWriter pdfWriter;
     EStatusCode esc1 = pdfWriter.StartPDF(pdfPath.UTF8String, ePDFVersionMax);
     
     if (esc1 == EStatusCode::eFailure) {
-        NSError *error = [[NSError alloc] init];
-        reject(@"Something went wrong?", @"pdfWriter.StartPDF FAILED!!!!", error);
+        reject(@"error", @"pdfWriter.StartPDF FAILED!!!!", nil);
     }
 
     // First page
     PDFPage *page = new PDFPage();
     page->SetMediaBox(PDFRectangle(0, 0, 595, 842));
     PageContentContext* contentContext = pdfWriter.StartPageContentContext(page);
-    AbstractContentContext::GraphicOptions pathFillOptions(AbstractContentContext::eFill,
-                                                           AbstractContentContext::eCMYK,
-                                                           0x00FF99);
-    contentContext->DrawRectangle(250, 100, 350, 350, pathFillOptions);
+    
+    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"BodoniFLF-Bold" ofType:@".ttf"];
+    NSLog(@"\n---\n%@\n---", fontPath);
+    PDFUsedFont *font = pdfWriter.GetFontForFile(fontPath.UTF8String);
+    AbstractContentContext::TextOptions textOptions(font, 14, AbstractContentContext::eGray, 0);
+    contentContext->WriteText(10, 100, text.UTF8String, textOptions);
+    
     pdfWriter.EndPageContentContext(contentContext);
     pdfWriter.WritePageAndRelease(page);
 
@@ -72,11 +111,26 @@ RCT_REMAP_METHOD(test,
     // Close PDF
     EStatusCode esc2 = pdfWriter.EndPDF();
     if (esc2 == EStatusCode::eFailure) {
-        NSError *error = [[NSError alloc] init];
-        reject(@"Something went wrong?", @"pdfWriter.EndPDF FAILED!!!", error);
+        reject(@"error", @"pdfWriter.EndPDF FAILED!!!", nil);
     }
 
     resolve(pdfPath);
+}
+
+RCT_REMAP_METHOD(launchPDFViewer,
+                 :(NSString*)pdfFile
+                 :(RCTPromiseResolveBlock)resolve
+                 :(RCTPromiseRejectBlock)reject)
+{
+    reject(@"error", @"launchPDFViewer is only supported for Android", nil);
+}
+
+RCT_REMAP_METHOD(getPDFsDir,
+                  resolverPDFsDir:(RCTPromiseResolveBlock)resolve
+                  rejecterPDFsDir:(RCTPromiseRejectBlock)reject)
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    resolve(paths.firstObject);
 }
 
 @end

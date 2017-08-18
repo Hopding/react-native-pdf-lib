@@ -8,11 +8,17 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.NoSuchKeyException;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableMapKeySetIterator;
+import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableMap;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDDocumentCatalog;
 import com.tom_roush.pdfbox.pdmodel.PDPage;
@@ -38,6 +44,10 @@ import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+
+import static android.R.attr.key;
+import static android.R.attr.progressBarStyleInverse;
 
 public class PDFLibModule extends ReactContextBaseJavaModule {
 
@@ -53,6 +63,41 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   @Override
   public String getName() {
     return "PDFLib";
+  }
+
+  @ReactMethod
+  public void createPDF(String path, ReadableMap template, Promise promise) {
+    Log.i("PDFLibModule", "Creating PDF at path: " + path);
+    PDFont font = PDType1Font.HELVETICA;
+    try {
+      PDDocument document = new PDDocument();
+      ReadableArray pages = template.getArray("pages");
+        for (int i = 0; i < pages.size(); i++) {
+          PDPage page = new PDPage();
+          document.addPage(page);
+          PDPageContentStream contentStream = new PDPageContentStream(document, page);
+          ReadableMap pageMap = pages.getMap(i);
+
+          contentStream.beginText();
+          contentStream.setNonStrokingColor(15, 38, 192);
+          contentStream.setFont(font, 12);
+          contentStream.newLineAtOffset(100, 700);
+          contentStream.showText(pageMap.getString("text"));
+          contentStream.endText();
+          contentStream.close();
+        }
+      document.save(new File(path));
+      document.close();
+    } catch (NoSuchKeyException e) {
+      e.printStackTrace();
+      promise.reject(e);
+      return;
+    } catch (IOException e) {
+      e.printStackTrace();
+      promise.reject(e);
+      return;
+    }
+    promise.resolve(path);
   }
 
   @ReactMethod
@@ -127,6 +172,6 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   public void getPDFsDir(Promise promise) {
     File dir = new File(reactContext.getFilesDir().getPath() + "/pdfs");
     dir.mkdirs();
-    promise.resolve(dir);
+    promise.resolve(dir.toString());
   }
 }
