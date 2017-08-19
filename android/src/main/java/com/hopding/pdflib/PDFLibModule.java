@@ -19,10 +19,12 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableMap;
+import com.hopding.pdflib.utils.PDFDocument;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDDocumentCatalog;
 import com.tom_roush.pdfbox.pdmodel.PDPage;
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
+import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 import com.tom_roush.pdfbox.pdmodel.encryption.AccessPermission;
 import com.tom_roush.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;
@@ -66,28 +68,29 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void createPDF(String path, ReadableMap template, Promise promise) {
-    Log.i("PDFLibModule", "Creating PDF at path: " + path);
-    PDFont font = PDType1Font.HELVETICA;
+  public void createPDF(ReadableMap documentActions, Promise promise) {
+//    PDFont font = PDType1Font.TIMES_ROMAN;
     try {
-      PDDocument document = new PDDocument();
-      ReadableArray pages = template.getArray("pages");
-        for (int i = 0; i < pages.size(); i++) {
-          PDPage page = new PDPage();
-          document.addPage(page);
-          PDPageContentStream contentStream = new PDPageContentStream(document, page);
-          ReadableMap pageMap = pages.getMap(i);
-
-          contentStream.beginText();
-          contentStream.setNonStrokingColor(15, 38, 192);
-          contentStream.setFont(font, 12);
-          contentStream.newLineAtOffset(100, 700);
-          contentStream.showText(pageMap.getString("text"));
-          contentStream.endText();
-          contentStream.close();
-        }
-      document.save(new File(path));
-      document.close();
+      promise.resolve(PDFDocument.generate(documentActions));
+//      PDDocument document = new PDDocument();
+//      ReadableArray pages = template.getArray("pages");
+//        for (int i = 0; i < pages.size(); i++) {
+//          PDPage page = new PDPage();
+//          page.setMediaBox(new PDRectangle(0, 0, 250, 250));
+//          document.addPage(page);
+//          PDPageContentStream contentStream = new PDPageContentStream(document, page);
+//          ReadableMap pageMap = pages.getMap(i);
+//
+//          contentStream.beginText();
+//          contentStream.setNonStrokingColor(15, 38, 192);
+//          contentStream.setFont(font, 12);
+//          contentStream.newLineAtOffset(0, 230);
+//          contentStream.showText(pageMap.getString("text"));
+//          contentStream.endText();
+//          contentStream.close();
+//        }
+//      document.save(new File(path));
+//      document.close();
     } catch (NoSuchKeyException e) {
       e.printStackTrace();
       promise.reject(e);
@@ -97,7 +100,6 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
       promise.reject(e);
       return;
     }
-    promise.resolve(path);
   }
 
   @ReactMethod
@@ -159,9 +161,8 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     );
-    Intent intent1 = Intent.createChooser(intent, "Open With");
     try {
-      reactContext.startActivity(intent1);
+      reactContext.startActivity(intent);
       promise.resolve(null);
     } catch (ActivityNotFoundException e) {
       promise.reject("No application available to view PDF!");

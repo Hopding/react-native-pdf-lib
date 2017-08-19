@@ -1,4 +1,5 @@
 #import "PDFLib.h"
+#import "PDFDocUtils.h"
 
 #include <PDFWriter.h>
 #include <PDFPage.h>
@@ -16,42 +17,19 @@
 RCT_EXPORT_MODULE()
 
 RCT_REMAP_METHOD(createPDF,
-                 :(NSString*)path
-                 :(NSDictionary*)pdfTemplate
+                 :(NSDictionary*)documentActions
                  :(RCTPromiseResolveBlock)resolve
                  :(RCTPromiseRejectBlock)reject)
 {
-    NSLog(@"Saving PDF to path: %@", path);
-    NSArray *pages = pdfTemplate[@"pages"];
-    
-    // Open new PDF
-    PDFWriter pdfWriter;
-    EStatusCode esc1 = pdfWriter.StartPDF(path.UTF8String, ePDFVersionMax);
-    if (esc1 == EStatusCode::eFailure) {
-        reject(@"error", @"pdfWriter.StartPDF FAILED!!!!", nil);
-    }
-    
-    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"BodoniFLF-Bold" ofType:@".ttf"];
-    PDFUsedFont *font = pdfWriter.GetFontForFile(fontPath.UTF8String);
-    for(NSDictionary *pageDict in pages)
+    NSString* path = [PDFDocUtils generate:documentActions];
+    if (path == nil)
     {
-        PDFPage *page = new PDFPage();
-        page->SetMediaBox(PDFRectangle(0, 0, 595, 842));
-        PageContentContext *contentContext = pdfWriter.StartPageContentContext(page);
-        AbstractContentContext::TextOptions textOptions(font, 14, AbstractContentContext::eGray, 0);
-        NSString *text = pageDict[@"text"];
-        contentContext->WriteText(10, 100, text.UTF8String, textOptions);
-        
-        pdfWriter.EndPageContentContext(contentContext);
-        pdfWriter.WritePageAndRelease(page);
+        reject(@"error", @"Error generating PDF!", nil);
     }
-    // Close PDF
-    EStatusCode esc2 = pdfWriter.EndPDF();
-    if (esc2 == EStatusCode::eFailure) {
-        reject(@"error", @"pdfWriter.EndPDF FAILED!!!", nil);
+    else
+    {
+        resolve(path);
     }
-    
-    resolve(path);
 }
 
 RCT_REMAP_METHOD(test,
@@ -76,7 +54,7 @@ RCT_REMAP_METHOD(test,
     page->SetMediaBox(PDFRectangle(0, 0, 595, 842));
     PageContentContext* contentContext = pdfWriter.StartPageContentContext(page);
     
-    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"BodoniFLF-Bold" ofType:@".ttf"];
+    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"Times New Roman" ofType:@".ttf"];
     NSLog(@"\n---\n%@\n---", fontPath);
     PDFUsedFont *font = pdfWriter.GetFontForFile(fontPath.UTF8String);
     AbstractContentContext::TextOptions textOptions(font, 14, AbstractContentContext::eGray, 0);
@@ -118,7 +96,7 @@ RCT_REMAP_METHOD(test,
 }
 
 RCT_REMAP_METHOD(launchPDFViewer,
-                 :(NSString*)pdfFile
+                 forFile:(NSString*)pdfFile
                  :(RCTPromiseResolveBlock)resolve
                  :(RCTPromiseRejectBlock)reject)
 {
