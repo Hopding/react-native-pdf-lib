@@ -6,9 +6,10 @@ export class PDFDocument {
     pages: [],
   };
 
-  constructor(path) {
-    this.document.path = path;
-    return this;
+  static create = (path) => {
+    const pdfDocument = new PDFDocument();
+    pdfDocument.setPath(path);
+    return pdfDocument;
   }
 
   setPath = (path) => {
@@ -28,7 +29,7 @@ export class PDFDocument {
     return this;
   }
 
-  create = () => {
+  write = () => {
     console.log('Creating this PDFDocument:');
     console.log(this.document);
     if (!this.document.path) {
@@ -46,6 +47,10 @@ export class PDFPage {
     mediaBox: { x: 0, y: 0, width: 250, height: 250 },
     actions: [],
   };
+
+  static create = () => {
+    return new PDFPage();
+  }
 
   setMediaBox = (width, height, options={}) => {
     this.page.mediaBox = {
@@ -68,6 +73,20 @@ export class PDFPage {
       value,
     };
     this.page.actions.push(textAction);
+    return this;
+  }
+
+  addRectangle = (x, y, width, height, options={}) => {
+    const rectAction = {
+      color: '#000000',
+      ...options,
+      type: 'rectangle',
+      x,
+      y,
+      width,
+      height,
+    };
+    this.page.actions.push(rectAction);
     return this;
   }
 }

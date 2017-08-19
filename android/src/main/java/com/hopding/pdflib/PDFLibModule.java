@@ -69,36 +69,14 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createPDF(ReadableMap documentActions, Promise promise) {
-//    PDFont font = PDType1Font.TIMES_ROMAN;
     try {
       promise.resolve(PDFDocument.generate(documentActions));
-//      PDDocument document = new PDDocument();
-//      ReadableArray pages = template.getArray("pages");
-//        for (int i = 0; i < pages.size(); i++) {
-//          PDPage page = new PDPage();
-//          page.setMediaBox(new PDRectangle(0, 0, 250, 250));
-//          document.addPage(page);
-//          PDPageContentStream contentStream = new PDPageContentStream(document, page);
-//          ReadableMap pageMap = pages.getMap(i);
-//
-//          contentStream.beginText();
-//          contentStream.setNonStrokingColor(15, 38, 192);
-//          contentStream.setFont(font, 12);
-//          contentStream.newLineAtOffset(0, 230);
-//          contentStream.showText(pageMap.getString("text"));
-//          contentStream.endText();
-//          contentStream.close();
-//        }
-//      document.save(new File(path));
-//      document.close();
     } catch (NoSuchKeyException e) {
       e.printStackTrace();
       promise.reject(e);
-      return;
     } catch (IOException e) {
       e.printStackTrace();
       promise.reject(e);
-      return;
     }
   }
 
@@ -159,7 +137,8 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
     intent.setFlags(
             Intent.FLAG_ACTIVITY_NO_HISTORY |
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                    Intent.FLAG_ACTIVITY_NEW_TASK
     );
     try {
       reactContext.startActivity(intent);

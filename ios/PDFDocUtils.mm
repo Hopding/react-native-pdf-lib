@@ -69,6 +69,10 @@
         {
             [PDFDocUtils addTextToContext:context withActions:action andFont:font];
         }
+        else if([type isEqualToString:@"rectangle"])
+        {
+            [PDFDocUtils addRectToContext:context withActions:action];
+        }
     }
     
     pdfWriter->EndPageContentContext(context);
@@ -83,14 +87,92 @@
     NSInteger xCoord   = [RCTConvert NSInteger:textActions[@"position"][@"x"]];
     NSInteger yCoord   = [RCTConvert NSInteger:textActions[@"position"][@"y"]];
     
-    // We get a color as a hex string, e.g. "#F0F0F0" - so parse to an integer
-    unsigned hexColor = 0;
-    NSScanner *scanner = [NSScanner scannerWithString:textActions[@"color"]];
-    [scanner setScanLocation:1]; // bypass '#' character
-    [scanner scanHexInt:&hexColor];
+    unsigned hexColor = [PDFDocUtils hexIntFromString:textActions[@"color"]];
 
     AbstractContentContext::TextOptions textOptions(font, fontSize, AbstractContentContext::eRGB, hexColor);
     context->WriteText(xCoord, yCoord, value.UTF8String, textOptions);
 }
 
++ (void) addRectToContext:(PageContentContext*)context withActions:(NSDictionary*)rectActions
+{
+    NSInteger x      = [RCTConvert NSInteger:rectActions[@"x"]];
+    NSInteger y      = [RCTConvert NSInteger:rectActions[@"y"]];
+    NSInteger width  = [RCTConvert NSInteger:rectActions[@"width"]];
+    NSInteger height = [RCTConvert NSInteger:rectActions[@"height"]];
+    
+    unsigned hexColor = [PDFDocUtils hexIntFromString:rectActions[@"color"]];
+    
+    AbstractContentContext::GraphicOptions options(AbstractContentContext::eFill,
+                                                   AbstractContentContext::eRGB,
+                                                   hexColor);
+    context->DrawRectangle(x, y, width, height, options );
+}
+
+// We get a color as a hex string, e.g. "#F0F0F0" - so parse to an integer
++ (unsigned) hexIntFromString:(NSString*)hexStr
+{
+    unsigned hexColor = 0;
+    NSScanner *scanner = [NSScanner scannerWithString:hexStr];
+    [scanner setScanLocation:1]; // bypass '#' character
+    [scanner scanHexInt:&hexColor];
+    return hexColor;
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

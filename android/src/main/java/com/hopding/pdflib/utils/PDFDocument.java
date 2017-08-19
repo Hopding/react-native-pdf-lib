@@ -57,8 +57,12 @@ public class PDFDocument {
         // Apply actions to the page
         for(int i = 0; i < actions.size(); i++) {
             ReadableMap action = actions.getMap(i);
-            if (action.getString("type").equals("text")) {
+            String type = action.getString("type");
+            if (type.equals("text")) {
                 addText(stream, action);
+            }
+            else if (type.equals("rectangle")) {
+                addRectangle(stream, action);
             }
         }
 
@@ -72,18 +76,35 @@ public class PDFDocument {
         int xCoord = textActions.getMap("position").getInt("x");
         int yCoord = textActions.getMap("position").getInt("y");
 
-        // We get a color as a hex string, e.g. "#F0F0F0" - so parse into RGB vals
-        String colorStr = textActions.getString("color");
-        int colorR = Integer.valueOf( colorStr.substring( 1, 3 ), 16 );
-        int colorG = Integer.valueOf( colorStr.substring( 3, 5 ), 16 );
-        int colorB = Integer.valueOf( colorStr.substring( 5, 7 ), 16 );
+        int[] rgbColor = hexStringToRGB(textActions.getString("color"));
 
         stream.beginText();
-        stream.setNonStrokingColor(colorR, colorG, colorB);
+        stream.setNonStrokingColor(rgbColor[0], rgbColor[1], rgbColor[2]);
         stream.setFont(PDType1Font.TIMES_ROMAN, fontSize);
         stream.newLineAtOffset(xCoord, yCoord);
         stream.showText(value);
         stream.endText();
+    }
+
+    private static void addRectangle(PDPageContentStream stream, ReadableMap rectActions) throws NoSuchKeyException, IOException {
+        int x = rectActions.getInt("x");
+        int y = rectActions.getInt("y");
+        int width = rectActions.getInt("width");
+        int height = rectActions.getInt("height");
+
+        int[] rgbColor = hexStringToRGB(rectActions.getString("color"));
+
+        stream.addRect(x, y, width, height);
+        stream.setNonStrokingColor(rgbColor[0], rgbColor[1], rgbColor[2]);
+        stream.fill();
+    }
+
+    // We get a color as a hex string, e.g. "#F0F0F0" - so parse into RGB vals
+    private static int[] hexStringToRGB(String hexString) {
+        int colorR = Integer.valueOf( hexString.substring( 1, 3 ), 16 );
+        int colorG = Integer.valueOf( hexString.substring( 3, 5 ), 16 );
+        int colorB = Integer.valueOf( hexString.substring( 5, 7 ), 16 );
+        return new int[] { colorR, colorG, colorB };
     }
 
 }
