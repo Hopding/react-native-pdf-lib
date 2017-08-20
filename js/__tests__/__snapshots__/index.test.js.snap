@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index.js exports the right stuff 1`] = `
+Object {
+  "PDFDocument": [Function],
+  "PDFPage": [Function],
+  "default": "mock value for PDFLib",
+}
+`;

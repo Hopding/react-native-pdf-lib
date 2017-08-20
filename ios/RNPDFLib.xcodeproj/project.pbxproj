@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE392BD71F468009009565BA /* Times New Roman.ttf in Copy Files */ = {isa = PBXBuildFile; fileRef = CE392BD61F468009009565BA /* Times New Roman.ttf */; };
 		CE96EB321F479E7D0026A591 /* PDFDocUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE96EB311F479E7D0026A591 /* PDFDocUtils.mm */; };
 		CEEA0B9D1F4500FE00DE517B /* libFreeType.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B981F4500FE00DE517B /* libFreeType.a */; };
 		CEEA0B9E1F4500FE00DE517B /* libLibJpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B991F4500FE00DE517B /* libLibJpeg.a */; };
@@ -24,7 +23,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				CE392BD71F468009009565BA /* Times New Roman.ttf in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNPDFLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPDFLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE392BD61F468009009565BA /* Times New Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Times New Roman.ttf"; sourceTree = "<group>"; };
 		CE96EB311F479E7D0026A591 /* PDFDocUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PDFDocUtils.mm; sourceTree = "<group>"; };
 		CE96EB331F479E940026A591 /* PDFDocUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFDocUtils.h; sourceTree = "<group>"; };
 		CEEA0B981F4500FE00DE517B /* libFreeType.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFreeType.a; path = lib/universal/libFreeType.a; sourceTree = "<group>"; };
@@ -73,7 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				CE96EB241F479DA20026A591 /* PDFUtils */,
-				CE392BD61F468009009565BA /* Times New Roman.ttf */,
 				CEEA0BA41F45043200DE517B /* PDFLib.h */,
 				CEEA0BA21F45042300DE517B /* PDFLib.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
