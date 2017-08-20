@@ -4,4 +4,6 @@
 
 + (NSString*)generate :(NSDictionary*)documentActions;
 
++ (NSString*)modify :(NSDictionary*)documentActions;
+
 @end

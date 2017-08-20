@@ -14,8 +14,6 @@
 + (NSString*)generate :(NSDictionary*)documentActions
 {
     NSString *path = documentActions[@"path"];
-    NSLog(@"Saving PDF to path: %@", path);
-    
     PDFWriter pdfWriter;
     EStatusCode esc;
     
@@ -23,6 +21,41 @@
     if (esc == EStatusCode::eFailure)
     {
         return nil;
+    }
+    
+    // Process pages
+    NSArray *pages = documentActions[@"pages"];
+    for (NSDictionary *page in pages)
+    {
+        [PDFDocUtils addPageToWriter:&pdfWriter withActions:page];
+    }
+    
+    esc = pdfWriter.EndPDF();
+    if (esc == EStatusCode::eFailure)
+    {
+        return nil;
+    }
+    
+    return path;
+}
+
++ (NSString*)modify :(NSDictionary*)documentActions
+{
+    NSString *path = documentActions[@"path"];
+    PDFWriter pdfWriter;
+    EStatusCode esc;
+    
+    esc = pdfWriter.ModifyPDF(path.UTF8String, ePDFVersionMax, @"".UTF8String);
+    if (esc == EStatusCode::eFailure)
+    {
+        return nil;
+    }
+    
+    // Process pages
+    NSArray *modifyPages = documentActions[@"modifyPages"];
+    for (NSDictionary *page in modifyPages)
+    {
+        [PDFDocUtils modifyPageWithWriter:&pdfWriter andActions:page];
     }
     
     // Process pages
@@ -73,13 +106,49 @@
         {
             [PDFDocUtils addRectToContext:context withActions:action];
         }
+        else if([type isEqualToString:@"image"])
+        {
+            [PDFDocUtils addImageToContext:context withActions:action];
+        }
     }
     
     pdfWriter->EndPageContentContext(context);
     pdfWriter->WritePageAndRelease(page);
 }
 
-+ (void) addTextToContext:(PageContentContext*)context withActions:(NSDictionary*)textActions andFont:(PDFUsedFont*)font
++ (void) modifyPageWithWriter:(PDFWriter*)pdfWriter andActions:(NSDictionary*)pageActions
+{
+    NSInteger pageIndex = [RCTConvert NSInteger:pageActions[@"pageIndex"]];
+    PDFModifiedPage page(pdfWriter, pageIndex);
+    AbstractContentContext *context = page.StartContentContext();
+    
+    // Apply actions to the page
+    NSArray *actions = pageActions[@"actions"];
+    for (NSDictionary *action in actions)
+    {
+        NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"Times New Roman" ofType:@".ttf"];
+        PDFUsedFont *font = pdfWriter->GetFontForFile(fontPath.UTF8String);
+        
+        NSString *type = [RCTConvert NSString:action[@"type"]];
+        if ([type isEqualToString:@"text"])
+        {
+            [PDFDocUtils addTextToContext:context withActions:action andFont:font];
+        }
+        else if([type isEqualToString:@"rectangle"])
+        {
+            [PDFDocUtils addRectToContext:context withActions:action];
+        }
+        else if([type isEqualToString:@"image"])
+        {
+            [PDFDocUtils addImageToContext:context withActions:action];
+        }
+    }
+    
+    page.EndContentContext();
+    page.WritePage();
+}
+
++ (void) addTextToContext:(AbstractContentContext*)context withActions:(NSDictionary*)textActions andFont:(PDFUsedFont*)font
 {
     NSString *value    = [RCTConvert NSString:textActions[@"value"]];
     NSInteger fontSize = [RCTConvert NSInteger:textActions[@"fontSize"]];
@@ -93,7 +162,7 @@
     context->WriteText(xCoord, yCoord, value.UTF8String, textOptions);
 }
 
-+ (void) addRectToContext:(PageContentContext*)context withActions:(NSDictionary*)rectActions
++ (void) addRectToContext:(AbstractContentContext*)context withActions:(NSDictionary*)rectActions
 {
     NSInteger x      = [RCTConvert NSInteger:rectActions[@"x"]];
     NSInteger y      = [RCTConvert NSInteger:rectActions[@"y"]];
@@ -106,6 +175,31 @@
                                                    AbstractContentContext::eRGB,
                                                    hexColor);
     context->DrawRectangle(x, y, width, height, options );
+}
+
++ (void) addImageToContext:(AbstractContentContext*)context withActions:(NSDictionary*)imageActions
+{
+    NSString *imageType = [RCTConvert NSString:imageActions[@"imageType"]];
+    NSString *imagePath = [RCTConvert NSString:imageActions[@"imagePath"]];
+    
+    NSInteger x = [RCTConvert NSInteger:imageActions[@"x"]];
+    NSInteger y = [RCTConvert NSInteger:imageActions[@"y"]];
+    
+    AbstractContentContext::ImageOptions options;
+    
+    if ([imageType isEqualToString:@"jpg"])
+    {
+        if (imageActions[@"width"] && imageActions[@"height"])
+        {
+            NSInteger width  = [RCTConvert NSInteger:imageActions[@"width"]];
+            NSInteger height = [RCTConvert NSInteger:imageActions[@"height"]];
+            options.transformationMethod = AbstractContentContext::EImageTransformation::eFit;
+            options.fitPolicy = AbstractContentContext::EFitPolicy::eAlways;
+            options.boundingBoxWidth  = width;
+            options.boundingBoxHeight = height;
+        }
+        context->DrawImage(x, y, imagePath.UTF8String, options);
+    }
 }
 
 // We get a color as a hex string, e.g. "#F0F0F0" - so parse to an integer

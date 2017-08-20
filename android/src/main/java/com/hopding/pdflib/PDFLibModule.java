@@ -44,7 +44,9 @@ import com.tom_roush.pdfbox.text.PDFTextStripper;
 import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -75,6 +77,19 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
       e.printStackTrace();
       promise.reject(e);
     } catch (IOException e) {
+      e.printStackTrace();
+      promise.reject(e);
+    }
+  }
+
+  @ReactMethod
+  public void modifyPDF(ReadableMap documentActions, Promise promise) {
+    try {
+      promise.resolve(PDFDocument.modify(documentActions));
+    } catch (NoSuchKeyException e) {
+      e.printStackTrace();
+      promise.reject(e);
+    } catch (IOException e ) {
       e.printStackTrace();
       promise.reject(e);
     }
@@ -153,5 +168,31 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
     File dir = new File(reactContext.getFilesDir().getPath() + "/pdfs");
     dir.mkdirs();
     promise.resolve(dir.toString());
+  }
+
+  @ReactMethod
+  public void getDocumentsDir(Promise promise) {
+    promise.resolve(reactContext.getFilesDir().getPath());
+  }
+
+  @ReactMethod
+  public void unloadAsset(String assetName, String destPath, Promise promise) {
+    try {
+      InputStream is = reactContext.getAssets().open(assetName);
+      byte[] buffer = new byte[is.available()];
+      is.read(buffer);
+      is.close();
+
+      File destFile = new File(destPath);
+      File dirFile = new File(destFile.getParent());
+      dirFile.mkdirs();
+
+      FileOutputStream fos = new FileOutputStream(destFile);
+      fos.write(buffer);
+      fos.close();
+      promise.resolve(destPath);
+    } catch (IOException e) {
+      promise.reject(e);
+    }
   }
 }

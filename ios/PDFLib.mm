@@ -18,13 +18,29 @@ RCT_EXPORT_MODULE()
 
 RCT_REMAP_METHOD(createPDF,
                  :(NSDictionary*)documentActions
-                 :(RCTPromiseResolveBlock)resolve
-                 :(RCTPromiseRejectBlock)reject)
+                 createPDFResolve:(RCTPromiseResolveBlock)resolve
+                 createPDFReject:(RCTPromiseRejectBlock)reject)
 {
     NSString* path = [PDFDocUtils generate:documentActions];
     if (path == nil)
     {
         reject(@"error", @"Error generating PDF!", nil);
+    }
+    else
+    {
+        resolve(path);
+    }
+}
+
+RCT_REMAP_METHOD(modifyPDF,
+                 :(NSDictionary*)documentActions
+                 modifyPDFResolve:(RCTPromiseResolveBlock)resolve
+                 modifyPDFReject:(RCTPromiseRejectBlock)reject)
+{
+    NSString* path = [PDFDocUtils modify:documentActions];
+    if (path == nil)
+    {
+        reject(@"error", @"Error modifying PDF!", nil);
     }
     else
     {
@@ -111,5 +127,52 @@ RCT_REMAP_METHOD(getPDFsDir,
     resolve(paths.firstObject);
 }
 
+RCT_REMAP_METHOD(getDocumentsDir,
+                 resolverDocssDir:(RCTPromiseResolveBlock)resolve
+                 rejecterDocssDir:(RCTPromiseRejectBlock)reject)
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    resolve(paths.firstObject);
+}
+
+RCT_REMAP_METHOD(unloadAsset,
+                 :(NSString*)path
+                 :(NSString*)nada // Need this for consistent interface with Android
+                 resolverUnloadAsset:(RCTPromiseResolveBlock)resolve
+                 rejecterUnloadAsset:(RCTPromiseRejectBlock)reject)
+{
+    resolve([[NSBundle mainBundle] pathForResource:path ofType:nil]);
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
