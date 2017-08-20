@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/Hopding/react-native-pdf-lib/issues"
   },
-  "homepage": "https://github.com/Hopding/react-native-pdf-lib#readme"
+  "homepage": "https://github.com/Hopding/react-native-pdf-lib#readme",
+  "rnpm": {
+    "assets": ["./assets"]
+  }
 }
