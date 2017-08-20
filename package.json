@@ -11,9 +11,7 @@
   ],
   "author": "Andrew Dillon",
   "license": "Apache-2.0",
-  "peerDependencies": {
-    "react-native": "^0.41.2"
-  },
+  "peerDependencies": {},
   "repository": "git+https://github.com/Hopding/react-native-pdf-lib.git",
   "bugs": {
     "url": "https://github.com/Hopding/react-native-pdf-lib/issues"
@@ -48,7 +46,6 @@
   },
   "dependencies": {
     "install": "^0.10.1",
-    "react-native": ">=0.40",
     "yarn": "^0.27.5"
   }
 }
