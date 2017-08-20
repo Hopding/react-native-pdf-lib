@@ -57,7 +57,7 @@
 
 ## Usage
 ### Warning:
-The API is currently in development, and all aspects of it are subject to breaking changes in future releases.
+The API is currently in active development, and all aspects of it are subject to breaking changes in future releases.
 
 ```javascript
 // Import from 'react-native-pdf-lib'
