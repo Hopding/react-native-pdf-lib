@@ -1,5 +1,5 @@
 #import "PDFLib.h"
-#import "PDFDocUtils.h"
+#import "PDFWriterFactory.h"
 
 #include <PDFWriter.h>
 #include <PDFPage.h>
@@ -21,7 +21,7 @@ RCT_REMAP_METHOD(createPDF,
                  createPDFResolve:(RCTPromiseResolveBlock)resolve
                  createPDFReject:(RCTPromiseRejectBlock)reject)
 {
-    NSString* path = [PDFDocUtils generate:documentActions];
+    NSString* path = PDFWriterFactory::create(documentActions);
     if (path == nil)
     {
         reject(@"error", @"Error generating PDF!", nil);
@@ -37,7 +37,7 @@ RCT_REMAP_METHOD(modifyPDF,
                  modifyPDFResolve:(RCTPromiseResolveBlock)resolve
                  modifyPDFReject:(RCTPromiseRejectBlock)reject)
 {
-    NSString* path = [PDFDocUtils modify:documentActions];
+    NSString* path = PDFWriterFactory::modify(documentActions);
     if (path == nil)
     {
         reject(@"error", @"Error modifying PDF!", nil);

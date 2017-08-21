@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE96EB321F479E7D0026A591 /* PDFDocUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE96EB311F479E7D0026A591 /* PDFDocUtils.mm */; };
+		CE7208A51F4A5DDD008CDD99 /* PDFPageFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE7208A31F4A5DDD008CDD99 /* PDFPageFactory.mm */; };
+		CE7208A71F4A765A008CDD99 /* PDFWriterFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CE7208A61F4A765A008CDD99 /* PDFWriterFactory.mm */; };
 		CEEA0B9D1F4500FE00DE517B /* libFreeType.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B981F4500FE00DE517B /* libFreeType.a */; };
 		CEEA0B9E1F4500FE00DE517B /* libLibJpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B991F4500FE00DE517B /* libLibJpeg.a */; };
 		CEEA0B9F1F4500FE00DE517B /* libLibTiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */; };
@@ -31,8 +32,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNPDFLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNPDFLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE96EB311F479E7D0026A591 /* PDFDocUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PDFDocUtils.mm; sourceTree = "<group>"; };
-		CE96EB331F479E940026A591 /* PDFDocUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFDocUtils.h; sourceTree = "<group>"; };
+		CE7208A31F4A5DDD008CDD99 /* PDFPageFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PDFPageFactory.mm; sourceTree = "<group>"; };
+		CE7208A41F4A5DDD008CDD99 /* PDFPageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFPageFactory.h; sourceTree = "<group>"; };
+		CE7208A61F4A765A008CDD99 /* PDFWriterFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PDFWriterFactory.mm; sourceTree = "<group>"; };
+		CE7208A81F4A7669008CDD99 /* PDFWriterFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDFWriterFactory.h; sourceTree = "<group>"; };
 		CEEA0B981F4500FE00DE517B /* libFreeType.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFreeType.a; path = lib/universal/libFreeType.a; sourceTree = "<group>"; };
 		CEEA0B991F4500FE00DE517B /* libLibJpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibJpeg.a; path = lib/universal/libLibJpeg.a; sourceTree = "<group>"; };
 		CEEA0B9A1F4500FE00DE517B /* libLibTiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLibTiff.a; path = lib/universal/libLibTiff.a; sourceTree = "<group>"; };
@@ -69,7 +72,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				CE96EB241F479DA20026A591 /* PDFUtils */,
+				CE7208A21F4A5DB4008CDD99 /* Factories */,
 				CEEA0BA41F45043200DE517B /* PDFLib.h */,
 				CEEA0BA21F45042300DE517B /* PDFLib.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
@@ -77,13 +80,15 @@
 			);
 			sourceTree = "<group>";
 		};
-		CE96EB241F479DA20026A591 /* PDFUtils */ = {
+		CE7208A21F4A5DB4008CDD99 /* Factories */ = {
 			isa = PBXGroup;
 			children = (
-				CE96EB311F479E7D0026A591 /* PDFDocUtils.mm */,
-				CE96EB331F479E940026A591 /* PDFDocUtils.h */,
+				CE7208A31F4A5DDD008CDD99 /* PDFPageFactory.mm */,
+				CE7208A41F4A5DDD008CDD99 /* PDFPageFactory.h */,
+				CE7208A61F4A765A008CDD99 /* PDFWriterFactory.mm */,
+				CE7208A81F4A7669008CDD99 /* PDFWriterFactory.h */,
 			);
-			name = PDFUtils;
+			name = Factories;
 			sourceTree = "<group>";
 		};
 		CEEA0B971F4500FA00DE517B /* Frameworks */ = {
@@ -154,8 +159,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE7208A71F4A765A008CDD99 /* PDFWriterFactory.mm in Sources */,
 				CEEA0BA31F45042300DE517B /* PDFLib.mm in Sources */,
-				CE96EB321F479E7D0026A591 /* PDFDocUtils.mm in Sources */,
+				CE7208A51F4A5DDD008CDD99 /* PDFPageFactory.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
