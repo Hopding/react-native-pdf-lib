@@ -31,7 +31,7 @@ export default class PDFPage {
     return this;
   }
 
-  addText = (value, options={}) => {
+  drawText = (value, options={}) => {
     const y = this.page.mediaBox ? this.page.mediaBox.height - 10 : 0;
     const textAction = {
       color: '#000000',
@@ -45,7 +45,7 @@ export default class PDFPage {
     return this;
   }
 
-  addRectangle = (x, y, width, height, options={}) => {
+  drawRectangle = (x, y, width, height, options={}) => {
     const rectAction = {
       color: '#000000',
       ...options,
@@ -59,7 +59,7 @@ export default class PDFPage {
     return this;
   }
 
-  addImage = (imagePath, imageType, options={}) => {
+  drawImage = (imagePath, imageType, options={}) => {
     // TODO: Add logic using ReactNative.Image to automatically preserve image
     // dimensions!
     if (imageType !== 'jpg') {

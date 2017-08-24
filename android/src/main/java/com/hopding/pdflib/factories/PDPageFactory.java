@@ -103,16 +103,20 @@ class PDPageFactory {
     private void drawImage(ReadableMap imageActions) throws NoSuchKeyException, IOException {
         String imageType = imageActions.getString("imageType");
         String imagePath = imageActions.getString("imagePath");
+        boolean contain  = imageActions.getBoolean("contain");
         Integer[] coords = getCoords(imageActions, true);
         Integer[] dims   = getDims(imageActions, false);
 
         if (imageType.equals("jpg")) {
             Bitmap bmpImage = BitmapFactory.decodeFile(imagePath);
             PDImageXObject image = JPEGFactory.createFromImage(document, bmpImage);
-            if (dims[0] != null && dims[1] != null)
+
+            if (dims[0] != null && dims[1] != null) {
                 stream.drawImage(image, coords[0], coords[1], dims[0], dims[1]);
-            else
+            }
+            else {
                 stream.drawImage(image, coords[0], coords[1]);
+            }
         }
     }
 

@@ -147,7 +147,7 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void getDocumentsDir(Promise promise) {
+  public void getDocumentsDirectory(Promise promise) {
     promise.resolve(reactContext.getFilesDir().getPath());
   }
 

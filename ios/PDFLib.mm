@@ -127,7 +127,7 @@ RCT_REMAP_METHOD(getPDFsDir,
     resolve(paths.firstObject);
 }
 
-RCT_REMAP_METHOD(getDocumentsDir,
+RCT_REMAP_METHOD(getDocumentsDirectory,
                  resolverDocssDir:(RCTPromiseResolveBlock)resolve
                  rejecterDocssDir:(RCTPromiseRejectBlock)reject)
 {
