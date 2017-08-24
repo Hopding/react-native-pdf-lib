@@ -79,7 +79,7 @@ class PDPageFactory {
         String value = textActions.getString("value");
         int fontSize = textActions.getInt("fontSize");
 
-        Integer[] coords = getCoords(textActions.getMap("position"), true);
+        Integer[] coords = getCoords(textActions, true);
         int[] rgbColor   = hexStringToRGB(textActions.getString("color"));
 
         stream.beginText();

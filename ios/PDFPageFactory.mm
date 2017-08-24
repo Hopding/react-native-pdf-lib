@@ -55,7 +55,7 @@ void PDFPageFactory::applyActions (NSDictionary* actions) {
 void PDFPageFactory::drawText (NSDictionary* textActions) {
     NSString* value    = [RCTConvert NSString:textActions[@"value"]];
     NSInteger fontSize = [RCTConvert NSInteger:textActions[@"fontSize"]];
-    NumberPair coords  = getCoords(textActions[@"position"]);
+    NumberPair coords  = getCoords(textActions);
     unsigned hexColor  = hexIntFromString(textActions[@"color"]);
     
     AbstractContentContext::TextOptions textOptions(font, fontSize, AbstractContentContext::eRGB, hexColor);

@@ -7,7 +7,7 @@ export default class PDFPage {
 
   static create = () => {
     const newPage = new PDFPage();
-    newPage.page.mediaBox = { x: 0, y: 0, width: 250, height: 250 };
+    newPage.page.mediaBox = { x: 0, y: 0, width: 250, height: 500 };
     return newPage;
   }
 
@@ -32,11 +32,11 @@ export default class PDFPage {
   }
 
   drawText = (value, options={}) => {
-    const y = this.page.mediaBox ? this.page.mediaBox.height - 10 : 0;
     const textAction = {
+      x: 0,
+      y: 0,
       color: '#000000',
       fontSize: 12,
-      position: { x: 5, y, },
       ...options,
       type: 'text',
       value,
@@ -45,15 +45,15 @@ export default class PDFPage {
     return this;
   }
 
-  drawRectangle = (x, y, width, height, options={}) => {
+  drawRectangle = (options={}) => {
     const rectAction = {
+      x: 0,
+      y: 0,
+      width: 50,
+      height: 50,
       color: '#000000',
       ...options,
       type: 'rectangle',
-      x,
-      y,
-      width,
-      height,
     };
     this.page.actions.push(rectAction);
     return this;
