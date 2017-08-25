@@ -6,8 +6,8 @@ This library's purpose is to fill the gap that currently exists in the React Nat
 ## Thanks
 This library would not be possible without the following projects:
 
-* https://github.com/galkahana/PDF-Writer is used for handling PDFs on iOS. Version 3.6 is used, and the static binaries are built with https://github.com/Hopding/hummus-ios-build.
-* https://github.com/TomRoush/PdfBox-Android is used for handling PDFs on Android. Version 1.8.9.1 is used.
+* https://github.com/galkahana/PDF-Writer is used for handling PDFs on iOS. (The static binaries for v3.6 are built with [hummus-ios-build](https://github.com/Hopding/hummus-ios-build)).
+* https://github.com/TomRoush/PdfBox-Android is used for handling PDFs on Android.
 
 ## Alternatives
 Create PDFs from HTML: https://github.com/christopherdro/react-native-html-to-pdf
