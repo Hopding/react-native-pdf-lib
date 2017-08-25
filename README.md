@@ -108,7 +108,7 @@ const page1 = PDFPage
 // Modify second page in document
 const jpgPath = // Path to a JPG image on the file system...
 const page2 = PDFPage
-  .create(1)
+  .modify(1)
   .drawText('You can add images to modified pages too!')
   .drawImage(jpgPath, 'jpg', {
      x: 5,
@@ -127,7 +127,7 @@ const page3 = PDFPage
     color: '#007386',
   });
 
-const existingPDF = // Path to existing PDF on file system
+const existingPDF = 'path/to/existing.pdf';
 PDFDocument
   .modify(existingPDF)
   .modifyPages(page1, page2)
