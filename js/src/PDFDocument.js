@@ -40,6 +40,7 @@ export default class PDFDocument {
     pages.forEach(page => {
       this.modifyPage(page);
     })
+    return this;
   }
 
   addPage = ({ page }) => {

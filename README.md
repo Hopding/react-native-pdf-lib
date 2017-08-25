@@ -51,13 +51,6 @@ const page1 = PDFPage
     color: '#FF99CC',
   })
   .drawRectangle({
-    x: 50,
-    y: 50,
-    width: 100,
-    height: 100,
-    color: '#33CCFF',
-  })
-  .drawRectangle({
     x: 75,
     y: 75,
     width: 50,
@@ -88,6 +81,60 @@ PDFDocument
   .then(path => {
     console.log('PDF created at: ' + path);
     // Do stuff with your shiny new PDF!
+  });
+```
+
+### Modify an Existing PDF Document
+```javascript
+// Import from 'react-native-pdf-lib'
+import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
+
+// Modify first page in document
+const page1 = PDFPage
+  .modify(0)
+  .drawText('This is a modification on the first page!', {
+    x: 5,
+    y: 235,
+    color: '#F62727',
+  })
+  .drawRectangle({
+    x: 150,
+    y: 150,
+    width: 50,
+    height: 50,
+    color: '#81C744',
+  });
+
+// Modify second page in document
+const jpgPath = // Path to a JPG image on the file system...
+const page2 = PDFPage
+  .create(1)
+  .drawText('You can add images to modified pages too!')
+  .drawImage(jpgPath, 'jpg', {
+     x: 5,
+     y: 125,
+     width: 200,
+     height: 100,
+  });
+
+// Create a PDF page to add to document
+const page3 = PDFPage
+  .create()
+  .setMediaBox(200, 200)
+  .drawText('You can add new pages to a modified PDF as well!', {
+    x: 5,
+    y: 235,
+    color: '#007386',
+  });
+
+const existingPDF = // Path to existing PDF on file system
+PDFDocument
+  .modify(existingPDF)
+  .modifyPages(page1, page2)
+  .addPage(page3)
+  .write() // Returns a promise that resolves with the PDF's path
+  .then(path => {
+    console.log('PDF modified at: ' + path);
   });
 ```
 
