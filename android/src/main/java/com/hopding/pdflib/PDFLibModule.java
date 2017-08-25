@@ -114,39 +114,6 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void launchPDFViewer(String pdfFile, Promise promise) {
-    Uri fileUri = FileProvider.getUriForFile(
-            reactContext,
-            reactContext.getPackageName() + ".fileprovider",
-            new File(pdfFile)
-    );
-
-    Log.i("PDFLibModule", "Opening: " + fileUri);
-
-    Intent intent = new Intent(Intent.ACTION_VIEW);
-    intent.setDataAndType(fileUri, "application/pdf");
-    intent.setFlags(
-            Intent.FLAG_ACTIVITY_NO_HISTORY |
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-    );
-    try {
-      reactContext.startActivity(intent);
-      promise.resolve(null);
-    } catch (ActivityNotFoundException e) {
-      promise.reject("No application available to view PDF!");
-    }
-  }
-
-  @ReactMethod
-  public void getPDFsDir(Promise promise) {
-    File dir = new File(reactContext.getFilesDir().getPath() + "/pdfs");
-    dir.mkdirs();
-    promise.resolve(dir.toString());
-  }
-
-  @ReactMethod
   public void getDocumentsDirectory(Promise promise) {
     promise.resolve(reactContext.getFilesDir().getPath());
   }
@@ -170,5 +137,12 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
     } catch (IOException e) {
       promise.reject(e);
     }
+  }
+
+  @ReactMethod
+  public void getAssetPath(String assetName, Promise promise) {
+    promise.reject(new Exception(
+      "PDFLib.getAssetPath() is only available on iOS. Try PDFLib.unloadAsset()"
+    ));
   }
 }

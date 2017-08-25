@@ -111,22 +111,6 @@ RCT_REMAP_METHOD(test,
     resolve(pdfPath);
 }
 
-RCT_REMAP_METHOD(launchPDFViewer,
-                 forFile:(NSString*)pdfFile
-                 :(RCTPromiseResolveBlock)resolve
-                 :(RCTPromiseRejectBlock)reject)
-{
-    reject(@"error", @"launchPDFViewer is only supported for Android", nil);
-}
-
-RCT_REMAP_METHOD(getPDFsDir,
-                  resolverPDFsDir:(RCTPromiseResolveBlock)resolve
-                  rejecterPDFsDir:(RCTPromiseRejectBlock)reject)
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    resolve(paths.firstObject);
-}
-
 RCT_REMAP_METHOD(getDocumentsDirectory,
                  resolverDocssDir:(RCTPromiseResolveBlock)resolve
                  rejecterDocssDir:(RCTPromiseRejectBlock)reject)
@@ -136,12 +120,20 @@ RCT_REMAP_METHOD(getDocumentsDirectory,
 }
 
 RCT_REMAP_METHOD(unloadAsset,
-                 :(NSString*)path
-                 :(NSString*)nada // Need this for consistent interface with Android
+                 :(NSString*)assetName
+                 :(NSString*)destPath
                  resolverUnloadAsset:(RCTPromiseResolveBlock)resolve
                  rejecterUnloadAsset:(RCTPromiseRejectBlock)reject)
 {
-    resolve([[NSBundle mainBundle] pathForResource:path ofType:nil]);
+    reject(@"error", @"PDFLib.unloadAsset() is only available on Android. Try PDFLib.getAssetpath().", nil);
+}
+
+RCT_REMAP_METHOD(getAssetPath,
+                 :(NSString*)assetName
+                 resolverUnloadAsset:(RCTPromiseResolveBlock)resolve
+                 rejecterUnloadAsset:(RCTPromiseRejectBlock)reject)
+{
+    resolve([[NSBundle mainBundle] pathForResource:assetName ofType:nil]);
 }
 
 @end
