@@ -1,5 +1,6 @@
 #include <Foundation/Foundation.h>
 #include <React/RCTConvert.h>
+#include <stdexcept>
 #include "PDFPageFactory.h"
 
 PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, AbstractContentContext* context) {
@@ -90,6 +91,12 @@ void PDFPageFactory::drawImage (NSDictionary* imageActions) {
             options.fitPolicy            = AbstractContentContext::EFitPolicy::eAlways;
             options.boundingBoxWidth     = dims.a.intValue;
             options.boundingBoxHeight    = dims.b.intValue;
+        }
+        
+        NSLog(@"File at path? %d", [[NSFileManager defaultManager] fileExistsAtPath:imagePath]);
+        if(![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+            NSString *msg = [NSString stringWithFormat:@"%@%@", @"No image found at path: ", imagePath];
+            throw std::invalid_argument(msg.UTF8String);
         }
         context->DrawImage(coords.a.intValue, coords.b.intValue, imagePath.UTF8String, options);
     }

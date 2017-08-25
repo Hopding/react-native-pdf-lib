@@ -7,6 +7,8 @@
 #include <libgen.h>
 #include <PDFModifiedPage.h>
 
+#import <stdexcept>
+
 #if __has_include(<React/RCTEventDispatcher.h>)
 #else
 #import "RCTEventDispatcher.h"
@@ -21,14 +23,20 @@ RCT_REMAP_METHOD(createPDF,
                  createPDFResolve:(RCTPromiseResolveBlock)resolve
                  createPDFReject:(RCTPromiseRejectBlock)reject)
 {
-    NSString* path = PDFWriterFactory::create(documentActions);
-    if (path == nil)
-    {
-        reject(@"error", @"Error generating PDF!", nil);
-    }
-    else
-    {
-        resolve(path);
+    try {
+        NSString* path = PDFWriterFactory::create(documentActions);
+        if (path == nil)
+        {
+            reject(@"error", @"Error generating PDF!", nil);
+        }
+        else
+        {
+            resolve(path);
+        }
+    } catch( const std::invalid_argument& e) {
+        NSString *msg = [NSString stringWithCString:e.what()
+                                  encoding:[NSString defaultCStringEncoding]];
+        reject(@"error", msg, nil);
     }
 }
 
