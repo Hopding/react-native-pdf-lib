@@ -4,6 +4,7 @@
     "transform-class-properties"
   ],
   "presets": [
-    "react-native"
+    "react-native",
+    "flow"
   ]
 }

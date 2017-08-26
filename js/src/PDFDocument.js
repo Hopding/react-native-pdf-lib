@@ -1,49 +1,64 @@
 /* @flow */
 import PDFLib from './PDFLib';
+import PDFPage from './PDFPage';
+
+import type { PageAction } from './PDFPage';
+
+export type DocumentAction = {
+  path: string,
+  pages: PageAction[],
+  modifyPages?: PageAction[],
+};
 
 export default class PDFDocument {
-  document = {
+  document: DocumentAction = {
     path: '',
     pages: [],
   };
 
-  static create = (path) => {
+  static create = (path: string) => {
     const pdfDocument = new PDFDocument();
     pdfDocument.setPath(path);
     return pdfDocument;
   }
 
-  static modify = (path) => {
+  static modify = (path: string) => {
     const pdfDocument = new PDFDocument();
     pdfDocument.setPath(path);
     pdfDocument.document.modifyPages = [];
     return pdfDocument;
   }
 
-  setPath = (path) => {
+  setPath = (path: string) => {
     this.document.path = path;
     return this;
   }
 
-  modifyPage = ({ page }) => {
+  modifyPage = ({ page }: PDFPage) => {
     if (page.pageIndex === undefined) {
       throw new Error(
         'Pages created with Page.create() must be added to document with ' +
         'PDFDocument.addPage(), instead of PDFDocument.modifyPage()'
       );
     }
+    if (this.document.modifyPages === undefined) {
+      throw new Error(
+        'Cannot modify pages on PDFDocument initialized with PDFDocument.create(),' +
+        ' please use PDFDocument.modify()'
+      )
+    }
     this.document.modifyPages.push(page);
     return this;
   }
 
-  modifyPages = (...pages) => {
+  modifyPages = (...pages: PDFPage[]) => {
     pages.forEach(page => {
       this.modifyPage(page);
     })
     return this;
   }
 
-  addPage = ({ page }) => {
+  addPage = ({ page }: PDFPage) => {
     if (page.pageIndex !== undefined) {
       throw new Error(
         'Pages created with Page.modify() must be added to document with ' +
@@ -54,7 +69,7 @@ export default class PDFDocument {
     return this;
   };
 
-  addPages = (...pages) => {
+  addPages = (...pages: PDFPage[]) => {
     pages.forEach(page => {
       this.addPage(page);
     });

@@ -1,7 +1,52 @@
 /* @flow */
 
+export type TextAction = {
+  type: 'text',
+  x: number,
+  y: number,
+  color: string,
+  fontSize: number,
+  value: string,
+};
+
+export type RectangleAction = {
+  type: 'rectangle',
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  color: string,
+};
+
+export type ImageAction = {
+  type: 'image',
+  imagePath: string,
+  imageType: string,
+  x: number,
+  y: number,
+  width?: number, // If don't have width & height, will use actual dimensions
+  height?: number,
+};
+
+export type PageActions =
+    TextAction
+  | RectangleAction
+  | ImageAction
+  ;
+
+export type PageAction = {
+  pageIndex?: number, // Not allowed in created pages
+  mediaBox?: { // Not allowed for modified pages
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  },
+  actions: PageActions[],
+};
+
 export default class PDFPage {
-  page = {
+  page: PageAction = {
     actions: [],
   };
 
@@ -17,7 +62,11 @@ export default class PDFPage {
     return newPage;
   }
 
-  setMediaBox = (width, height, options={}) => {
+  setMediaBox = (
+    width: number,
+    height: number,
+    options: { x?: number, y?: number }={},
+  ) => {
     if (this.page.pageIndex !== undefined) {
       throw new Error('Cannot set media box on modified page!');
     }
@@ -31,8 +80,16 @@ export default class PDFPage {
     return this;
   }
 
-  drawText = (value, options={}) => {
-    const textAction = {
+  drawText = (
+    value: string,
+    options: {
+      x?: number,
+      y?: number,
+      color?: string,
+      fontSize?: number,
+    }={}
+  ) => {
+    const textAction: TextAction = {
       x: 0,
       y: 0,
       color: '#000000',
@@ -45,8 +102,16 @@ export default class PDFPage {
     return this;
   }
 
-  drawRectangle = (options={}) => {
-    const rectAction = {
+  drawRectangle = (
+    options: {
+      x?: number,
+      y?: number,
+      width?: number,
+      height?: number,
+      color?: string,
+    }={}
+  ) => {
+    const rectAction: RectangleAction = {
       x: 0,
       y: 0,
       width: 50,
@@ -59,13 +124,22 @@ export default class PDFPage {
     return this;
   }
 
-  drawImage = (imagePath, imageType, options={}) => {
+  drawImage = (
+    imagePath: string,
+    imageType: string,
+    options: {
+      x?: number,
+      y?: number,
+      width?: number,
+      height?: number,
+    }={}
+  ) => {
     // TODO: Add logic using ReactNative.Image to automatically preserve image
     // dimensions!
     if (imageType !== 'jpg') {
       throw new Error('Only JPG images are currently supported!');
     }
-    const imageAction = {
+    const imageAction: ImageAction = {
       x: 0,
       y: 0,
       ...options,

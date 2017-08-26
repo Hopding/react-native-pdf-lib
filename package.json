@@ -41,6 +41,8 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-native": "1.9.2",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.53.1",
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4"
   },
