@@ -4,50 +4,25 @@
 #include "PDFPageFactory.h"
 #include "IByteReaderWithPosition.h"
 #include "InputByteArrayStream.h"
-#include "IPageEndWritingTask.h"
+#include "InputFileStream.h"
+#include "InputStringBufferStream.h"
+#include "MyStringBuf.h"
 
-class PageImageWritingTask : public IPageEndWritingTask
-{
-public:
-    PageImageWritingTask(const std::string& inImagePath,unsigned long inImageIndex,ObjectIDType inObjectID,const PDFParsingOptions& inPDFParsingOptions)
-    {
-        mImagePath = inImagePath;
-        mImageIndex = inImageIndex;
-        mObjectID = inObjectID;
-        mPDFParsingOptions = inPDFParsingOptions;
-    }
-    
-    virtual ~PageImageWritingTask(){}
-    
-    virtual PDFHummus::EStatusCode Write(PDFPage* inPageObject,
-                                         ObjectsContext* inObjectsContext,
-                                         PDFHummus::DocumentContext* inDocumentContext)
-    {
-        return inDocumentContext->WriteFormForImage(mImagePath,mImageIndex,mObjectID,mPDFParsingOptions);
-    }
-
-private:
-    std::string mImagePath;
-    unsigned long mImageIndex;
-    ObjectIDType mObjectID;
-    PDFParsingOptions mPDFParsingOptions;
-};
-
-PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, PDFPage* page, AbstractContentContext* context) {
+PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, PDFPage* page) {
     NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"Times New Roman" ofType:@".ttf"];
 
-    this->pdfWriter = pdfWriter;
-    this->page      = page;
-    this->context   = context;
-    this->font      = pdfWriter->GetFontForFile(fontPath.UTF8String);
+    this->pdfWriter    = pdfWriter;
+    this->page         = page;
+    this->modifiedPage = nullptr;
+    this->font         = pdfWriter->GetFontForFile(fontPath.UTF8String);
 }
 
-PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, PDFModifiedPage* page, AbstractContentContext* context) {
+PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, PDFModifiedPage* page) {
     NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"Times New Roman" ofType:@".ttf"];
     
     this->pdfWriter    = pdfWriter;
     this->modifiedPage = page;
-    this->context      = context;
+    this->page         = nullptr;
     this->font         = pdfWriter->GetFontForFile(fontPath.UTF8String);
 }
 
@@ -62,10 +37,22 @@ ResourcesDictionary* PDFPageFactory::getResourcesDict () {
     return nullptr; // This should never happen...
 }
 
+void PDFPageFactory::endContext () {
+    // Determine if we have a PDFPage or a PDFModifiedPage
+    if (this->page != nullptr) {
+        pdfWriter->EndPageContentContext((PageContentContext*)context);
+    }
+    else if (this->modifiedPage != nullptr) {
+        modifiedPage->EndContentContext();
+    }
+    else {
+        throw std::invalid_argument(@"No pages found - this should never happen!".UTF8String);
+    }
+}
+
 void PDFPageFactory::createAndWrite (PDFWriter* pdfWriter, NSDictionary* pageActions) {
     PDFPage* page = new PDFPage();
-    PageContentContext* context = pdfWriter->StartPageContentContext(page);
-    PDFPageFactory factory(pdfWriter, page, context);
+    PDFPageFactory factory(pdfWriter, page);
     
     NumberPair coords = getCoords(pageActions[@"mediaBox"]);
     NumberPair dims   = getDims(pageActions[@"mediaBox"]);
@@ -74,22 +61,41 @@ void PDFPageFactory::createAndWrite (PDFWriter* pdfWriter, NSDictionary* pageAct
                                    dims.a.intValue,
                                    dims.b.intValue));
     factory.applyActions(pageActions[@"actions"]);
-    pdfWriter->EndPageContentContext(context);
+    factory.endContext();
     pdfWriter->WritePageAndRelease(page);
 }
 
 void PDFPageFactory::modifyAndWrite (PDFWriter* pdfWriter, NSDictionary* pageActions) {
     NSInteger pageIndex = [RCTConvert NSInteger:pageActions[@"pageIndex"]];
     PDFModifiedPage page(pdfWriter, pageIndex);
-    AbstractContentContext* context = page.StartContentContext();
-    PDFPageFactory factory(pdfWriter, &page, context);
+    PDFPageFactory factory(pdfWriter, &page);
     
     factory.applyActions(pageActions[@"actions"]);
-    page.EndContentContext();
+    factory.endContext();
     page.WritePage();
 }
 
 void PDFPageFactory::applyActions (NSDictionary* actions) {
+    // Add any necessary FormXObjects before opening the Page's ContentContext
+    for (NSDictionary *action in actions) {
+        NSString *type = [RCTConvert NSString:action[@"type"]];
+        if ([type isEqualToString:@"pdfImage"]) {
+            addPDFImageFormXObject(action);
+        }
+    }
+    
+    // Start the Page's ContentContext
+    if (page != nullptr) {
+        context = pdfWriter->StartPageContentContext(page);
+    }
+    else if (modifiedPage != nullptr) {
+        context = modifiedPage->StartContentContext();
+    }
+    else {
+        throw std::invalid_argument(@"No pages found - this should never happen!".UTF8String);
+    }
+    
+    // Operate on the Page's ContentContext
     for (NSDictionary *action in actions) {
         NSString *type = [RCTConvert NSString:action[@"type"]];
         if ([type isEqualToString:@"text"]) {
@@ -104,6 +110,35 @@ void PDFPageFactory::applyActions (NSDictionary* actions) {
         else if([type isEqualToString:@"pdfImage"]) {
             drawImageAsPDF(action);
         }
+    }
+}
+
+// Add a FormXObject to the PDFWriter for the image specified in the given `pdfImageActions`.
+void PDFPageFactory::addPDFImageFormXObject (NSDictionary* pdfImageActions) {
+    NSString *imageType = [RCTConvert NSString:pdfImageActions[@"imageType"]];
+    NSString *imagePath = [RCTConvert NSString:pdfImageActions[@"imagePath"]];
+    AbstractContentContext::ImageOptions options;
+    
+    if ([imageType isEqualToString:@"jpg"] || [imageType isEqualToString:@"png"]) {
+        if(![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+            NSString *msg = [NSString stringWithFormat:@"%@%@", @"No image found at path: ", imagePath];
+            throw std::invalid_argument(msg.UTF8String);
+        }
+        
+        UIImage* image   = [UIImage imageWithContentsOfFile:imagePath];
+        NSData* imagePDF = PDFPageFactory::convertImageToPDF(image);
+        
+        IOBasicTypes::Byte* bytes = (unsigned char*)[imagePDF bytes];
+        InputByteArrayStream imageStream(bytes, [imagePDF length]*sizeof(char));
+        EStatusCodeAndObjectIDTypeList result = pdfWriter->CreateFormXObjectsFromPDF((IByteReaderWithPosition*)&imageStream,
+                                                                                     PDFPageRange(),
+                                                                                     ePDFPageBoxMediaBox);
+        if (result.first == EStatusCode::eFailure) {
+            throw std::invalid_argument(@"Failed to embed PDF!".UTF8String);
+        }
+        
+        // Store the FormXObject's ID under the key for the image
+        formXObjectMap.insert(std::pair<NSString*, unsigned long>(imagePath, result.second.front()));
     }
 }
 
@@ -156,90 +191,72 @@ void PDFPageFactory::drawImage (NSDictionary* imageActions) {
 }
 
 void PDFPageFactory::drawImageAsPDF (NSDictionary* imageActions) {
+    // Initialize relevant variables
     NSString *imageType = [RCTConvert NSString:imageActions[@"imageType"]];
     NSString *imagePath = [RCTConvert NSString:imageActions[@"imagePath"]];
     NumberPair coords   = getCoords(imageActions);
     NumberPair dims     = getDims(imageActions);
     AbstractContentContext::ImageOptions options;
     
+    // Only go this for JPGs & PNGs
     if ([imageType isEqualToString:@"jpg"] || [imageType isEqualToString:@"png"]) {
+        UIImage* image = [UIImage imageWithContentsOfFile:imagePath];
+
         if (dims.a && dims.b) {
             options.transformationMethod = AbstractContentContext::EImageTransformation::eFit;
             options.fitPolicy            = AbstractContentContext::EFitPolicy::eAlways;
             options.boundingBoxWidth     = dims.a.intValue;
             options.boundingBoxHeight    = dims.b.intValue;
+//            options.fitProportional = true;
         }
         
-        if(![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
-            NSString *msg = [NSString stringWithFormat:@"%@%@", @"No image found at path: ", imagePath];
-            throw std::invalid_argument(msg.UTF8String);
-        }
-        
-        UIImage* image   = [UIImage imageWithContentsOfFile:imagePath];
-        NSData* imagePDF = PDFPageFactory::convertImageToPDF(image);
-        
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString* docsDir = paths.firstObject;
-        NSString* path = [NSString stringWithFormat:@"%@/%@", docsDir, @"image.pdf"];
-        
-        [imagePDF writeToFile:path atomically:true];
-        pdfWriter->EndPageContentContext((PageContentContext*)context);
-        EStatusCodeAndObjectIDTypeList result =
-            pdfWriter->CreateFormXObjectsFromPDF(path.UTF8String,
-                                                    PDFPageRange(),
-                                                    ePDFPageBoxMediaBox);
-        context = pdfWriter->StartPageContentContext(page);
-        
-//        ObjectIDTypeAndBool result = pdfWriter->GetDocumentContext().RegisterImageForDrawing(path.UTF8String, options.imageIndex);
-//        if(result.second)
-//        {
-//            // if first usage, write the image
-////            ScheduleImageWrite(path.UTF8String, options.imageIndex, result.first, options.pdfParsingOptions);
-////            pdfWriter->GetDocumentContext().RegisterPageEndWritingTask(page,
-//            //                                                         new PageImageWritingTask(inImagePath,inImageIndex,inObjectID,inParsingOptions));
-//            NSLog(@"Doing RegisterPageEndWritingTask...");
-//            pdfWriter->GetDocumentContext().RegisterPageEndWritingTask(page,
-//                                                                       new PageImageWritingTask(path.UTF8String,
-//                                                                                                     options.imageIndex,
-//                                                                                                     result.first,
-//                                                                                                     options.pdfParsingOptions));
-////            pdfWriter->GetDocumentContext().WriteFormForImage(path.UTF8String, options.imageIndex, result.first);
-//        }
-//        double transformation[6] = {1,0,0,1,0,0};
-//        context->q();
-//        context->cm(transformation[0],transformation[1],transformation[2],transformation[3],transformation[4],transformation[5]);
-//        context->Do(getResourcesDict()->AddFormXObjectMapping(result.first));
-//        context->Q();
-
-        
-//        IOBasicTypes::Byte* bytes = (unsigned char*)[imagePDF bytes];
-//        InputByteArrayStream imageStream(bytes, 0);
-//        EStatusCodeAndObjectIDTypeList result =
-//            pdfWriter->CreateFormXObjectsFromPDF((IByteReaderWithPosition*)&imageStream,
-//                                                 PDFPageRange(),
-//                                                 ePDFPageBoxMediaBox);
-//        if (result.first == EStatusCode::eFailure) {
-//            NSLog(@"%@", @"IT DIDNT WORK!!!");
-//        }
-//        NSLog(@"%@%lu", @"Form ID: ", result.second.front());
-        
-//        std::string x = getResourcesDict()->AddFormXObjectMapping(result.second.front());
-//        NSString *msg = [NSString stringWithCString:x.c_str()
-//                                                    encoding:[NSString defaultCStringEncoding]];
-//        NSLog(@"%@%@", @"...AddFormXObjectMapping...: ", msg);
-//        ObjectIDTypeList::iterator it = result.second.begin();
-//        ObjectIDType firstPageID = *it;
-//
-        context->q();
         double transformation[6] = {1,0,0,1,0,0};
-        context->cm(transformation[0],transformation[1],transformation[2],transformation[3],transformation[4],transformation[5]);
-//        context->cm(0.5,0,0,0.5,0,421);
-//        context->Do(getResourcesDict()->AddFormXObjectMapping(result.first));
-        context->Do(getResourcesDict()->AddFormXObjectMapping(result.second.front()));
-//        context->Do(getResourcesDict()->AddFormXObjectMapping(firstPageID));
-        context->Q();
+        /* --- Adjust transform matrix to scale the image appropriately --- */
+        if(options.transformationMethod == AbstractContentContext::eMatrix) {
+            for(int i = 0; i < 6; ++i)
+                transformation[i] = options.matrix[i];
+        }
+        else if(options.transformationMethod == AbstractContentContext::eFit) {
+            double scaleX = 1;
+            double scaleY = 1;
+            
+            if(options.fitPolicy == AbstractContentContext::eAlways) {
+                scaleX = options.boundingBoxWidth  / [image size].width;
+                scaleY = options.boundingBoxHeight / [image size].height;
+            }
+            else if([image size].width  > options.boundingBoxWidth ||
+                    [image size].height > options.boundingBoxHeight)
+            { // Overflow
+                scaleX = [image size].width  > options.boundingBoxWidth  ? options.boundingBoxWidth  / [image size].width  : 1;
+                scaleY = [image size].height > options.boundingBoxHeight ? options.boundingBoxHeight / [image size].height : 1;
+            }
+            
+            if(options.fitProportional) {
+                scaleX = std::min(scaleX, scaleY);
+                scaleY = scaleX;
+            }
+            
+            transformation[0] = scaleX;
+            transformation[3] = scaleY;
+        }
         
-//        context->DrawImage(coords.a.intValue, coords.b.intValue, path.UTF8String, options);
+        transformation[4] += coords.a.intValue;
+        transformation[5] += coords.b.intValue;
+        /* ----------------------------------------------------------------- */
+        
+        // Retrieve & use the formXObject that we previously generated for this image
+        std::string formXObjectName = getResourcesDict()->AddFormXObjectMapping(formXObjectMap.at(imagePath));
+        
+        // Draw on the page's context
+        context->q();
+        context->cm(transformation[0],
+                    transformation[1],
+                    transformation[2],
+                    transformation[3],
+                    transformation[4],
+                    transformation[5]);
+        context->Do(formXObjectName);
+        context->Q();
     }
 }
 

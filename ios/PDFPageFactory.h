@@ -19,12 +19,16 @@ private:
     PDFModifiedPage*        modifiedPage;
     AbstractContentContext* context;
     PDFUsedFont*            font;
+    std::map<NSString*, unsigned long> formXObjectMap;
     
 //    PDFPageFactory  (PDFWriter*, AbstractContentContext*);
-    PDFPageFactory  (PDFWriter*, PDFPage*, AbstractContentContext*);
-    PDFPageFactory  (PDFWriter*, PDFModifiedPage*, AbstractContentContext*);
+    PDFPageFactory  (PDFWriter*, PDFPage*);
+    PDFPageFactory  (PDFWriter*, PDFModifiedPage*);
     
     ResourcesDictionary* getResourcesDict ();
+    void                 endContext       ();
+    
+    void addPDFImageFormXObject (NSDictionary* pdfImageActions);
     
     void         applyActions       (NSDictionary* actions);
     PDFRectangle createPDFRectangle (NSDictionary* rectangleActions);
