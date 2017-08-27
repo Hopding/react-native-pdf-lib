@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <UIKit/UIKit.h>
 #include <PDFWriter.h>
 #include <PDFPage.h>
 #include <PageContentContext.h>
@@ -14,21 +15,29 @@ class PDFPageFactory {
 private:
     
     PDFWriter*              pdfWriter;
+    PDFPage*                page;
+    PDFModifiedPage*        modifiedPage;
     AbstractContentContext* context;
     PDFUsedFont*            font;
     
-    PDFPageFactory  (PDFWriter*, AbstractContentContext*);
+//    PDFPageFactory  (PDFWriter*, AbstractContentContext*);
+    PDFPageFactory  (PDFWriter*, PDFPage*, AbstractContentContext*);
+    PDFPageFactory  (PDFWriter*, PDFModifiedPage*, AbstractContentContext*);
+    
+    ResourcesDictionary* getResourcesDict ();
     
     void         applyActions       (NSDictionary* actions);
     PDFRectangle createPDFRectangle (NSDictionary* rectangleActions);
     void         drawText           (NSDictionary* textActions);
     void         drawRectangle      (NSDictionary* rectActions);
     void         drawImage          (NSDictionary* imageActions);
+    void         drawImageAsPDF     (NSDictionary* imageActions);
     
-    static NumberPair getCoords        (NSDictionary* coordsMap);
-    static NumberPair getDims          (NSDictionary* coordsMap);
-    static NumberPair getNumberKeyPair (NSDictionary* map, NSString* key1, NSString* key2);
-    static unsigned   hexIntFromString (NSString* hexStr);
+    static NumberPair getCoords         (NSDictionary* coordsMap);
+    static NumberPair getDims           (NSDictionary* coordsMap);
+    static NumberPair getNumberKeyPair  (NSDictionary* map, NSString* key1, NSString* key2);
+    static NSData*    convertImageToPDF (UIImage* image);
+    static unsigned   hexIntFromString  (NSString* hexStr);
 
 
     

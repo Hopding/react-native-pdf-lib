@@ -8,6 +8,7 @@ PDFWriterFactory::PDFWriterFactory (PDFWriter* pdfWriter) {
 
 NSString* PDFWriterFactory::create (NSDictionary* documentActions) {
     NSString *path = documentActions[@"path"];
+    NSLog(@"%@%@", @"Creating document at: ", path);
     PDFWriter pdfWriter;
     EStatusCode esc;
     PDFWriterFactory factory(&pdfWriter);
@@ -30,6 +31,7 @@ NSString* PDFWriterFactory::create (NSDictionary* documentActions) {
 
 NSString* PDFWriterFactory::modify(NSDictionary* documentActions) {
     NSString *path = documentActions[@"path"];
+    NSLog(@"%@%@", @"Creating document at: ", path);
     PDFWriter pdfWriter;
     EStatusCode esc;
     PDFWriterFactory factory(&pdfWriter);

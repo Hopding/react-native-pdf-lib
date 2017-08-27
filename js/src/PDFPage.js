@@ -28,10 +28,21 @@ export type ImageAction = {
   height?: number,
 };
 
+export type PDFImageAction = {
+  type: 'pdfImage',
+  imagePath: string,
+  imageType: string,
+  x: number,
+  y: number,
+  width?: number, // If don't have width & height, will use actual dimensions
+  height?: number,
+}
+
 export type PageActions =
     TextAction
   | RectangleAction
   | ImageAction
+  | PDFImageAction
   ;
 
 export type PageAction = {
@@ -148,6 +159,31 @@ export default class PDFPage {
       imageType,
     };
     this.page.actions.push(imageAction);
+    return this;
+  }
+
+  drawImageAsPDF = (
+    imagePath: string,
+    imageType: string,
+    options: {
+      x?: number,
+      y?: number,
+      width?: number,
+      height?: number,
+    }={}
+  ) => {
+    if (!['png', 'jpg'].includes(imageType)) {
+      throw new Error('Only JPG and PNG images are currently supported');
+    }
+    const pdfImageAction: PDFImageAction = {
+      x: 0,
+      y: 0,
+      ...options,
+      type: 'pdfImage',
+      imagePath,
+      imageType,
+    };
+    this.page.actions.push(pdfImageAction);
     return this;
   }
 }

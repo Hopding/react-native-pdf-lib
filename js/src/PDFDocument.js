@@ -10,12 +10,20 @@ export type DocumentAction = {
   modifyPages?: PageAction[],
 };
 
+/**
+ * Here is some docs...
+ */
 export default class PDFDocument {
   document: DocumentAction = {
     path: '',
     pages: [],
   };
 
+  /**
+   * Create a new PDFDocument that will be written at the specified path
+   * @param {string} path - The absolute file path for this document to be
+   *                        written to.
+   */
   static create = (path: string) => {
     const pdfDocument = new PDFDocument();
     pdfDocument.setPath(path);
