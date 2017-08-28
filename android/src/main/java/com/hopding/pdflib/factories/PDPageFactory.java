@@ -2,7 +2,9 @@ package com.hopding.pdflib.factories;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.RequiresPermission;
 
+import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.react.bridge.NoSuchKeyException;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -12,9 +14,14 @@ import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory;
+import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Create a PDPage object and applies actions described in JSON
@@ -26,16 +33,16 @@ class PDPageFactory {
     protected PDPage page;
     protected PDPageContentStream stream;
 
-    private PDPageFactory(PDDocument document, PDPage page) throws IOException {
+    private PDPageFactory(PDDocument document, PDPage page, boolean appendContent) throws IOException {
         this.document = document;
         this.page     = page;
-        this.stream   = new PDPageContentStream(document, page);
+        this.stream   = new PDPageContentStream(document, page, appendContent, true, true);
     }
 
             /* ----- Factory methods ----- */
     protected static PDPage create(PDDocument document, ReadableMap pageActions) throws IOException {
         PDPage page = new PDPage();
-        PDPageFactory factory = new PDPageFactory(document, page);
+        PDPageFactory factory = new PDPageFactory(document, page, false);
 
         factory.setMediaBox(pageActions.getMap("mediaBox"));
         factory.applyActions(pageActions);
@@ -46,7 +53,7 @@ class PDPageFactory {
     protected static PDPage modify(PDDocument document, ReadableMap pageActions) throws IOException {
         int pageIndex = pageActions.getInt("pageIndex");
         PDPage page   = document.getPage(pageIndex);
-        PDPageFactory factory = new PDPageFactory(document, page);
+        PDPageFactory factory = new PDPageFactory(document, page, true);
 
         factory.applyActions(pageActions);
         factory.stream.close();
@@ -106,10 +113,20 @@ class PDPageFactory {
         Integer[] coords = getCoords(imageActions, true);
         Integer[] dims   = getDims(imageActions, false);
 
-        if (imageType.equals("jpg")) {
-            Bitmap bmpImage = BitmapFactory.decodeFile(imagePath);
-            PDImageXObject image = JPEGFactory.createFromImage(document, bmpImage);
+        if (imageType.equals("jpg") || imageType.equals("png")) {
+            // Create PDImageXObject
+            PDImageXObject image = null;
+            if (imageType.equals("jpg")) {
+                Bitmap bmpImage = BitmapFactory.decodeFile(imagePath);
+                image = JPEGFactory.createFromImage(document, bmpImage);
+            }
+            else { // imageType.equals("png") == true
+                InputStream in = new FileInputStream(new File(imagePath));
+                Bitmap bmp = BitmapFactory.decodeStream(in);
+                image = LosslessFactory.createFromImage(document, bmp);
+            }
 
+            // Draw the PDImageXObject to the stream
             if (dims[0] != null && dims[1] != null) {
                 stream.drawImage(image, coords[0], coords[1], dims[0], dims[1]);
             }

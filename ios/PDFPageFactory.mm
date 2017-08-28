@@ -79,7 +79,7 @@ void PDFPageFactory::applyActions (NSDictionary* actions) {
     // Add any necessary FormXObjects before opening the Page's ContentContext
     for (NSDictionary *action in actions) {
         NSString *type = [RCTConvert NSString:action[@"type"]];
-        if ([type isEqualToString:@"pdfImage"]) {
+        if ([type isEqualToString:@"image"]) {
             addPDFImageFormXObject(action);
         }
     }
@@ -107,9 +107,6 @@ void PDFPageFactory::applyActions (NSDictionary* actions) {
         else if([type isEqualToString:@"image"]) {
             drawImage(action);
         }
-        else if([type isEqualToString:@"pdfImage"]) {
-            drawImageAsPDF(action);
-        }
     }
 }
 
@@ -119,7 +116,7 @@ void PDFPageFactory::addPDFImageFormXObject (NSDictionary* pdfImageActions) {
     NSString *imagePath = [RCTConvert NSString:pdfImageActions[@"imagePath"]];
     AbstractContentContext::ImageOptions options;
     
-    if ([imageType isEqualToString:@"jpg"] || [imageType isEqualToString:@"png"]) {
+    if ([imageType isEqualToString:@"png"]) {
         if(![[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
             NSString *msg = [NSString stringWithFormat:@"%@%@", @"No image found at path: ", imagePath];
             throw std::invalid_argument(msg.UTF8String);
@@ -169,12 +166,13 @@ void PDFPageFactory::drawRectangle (NSDictionary* rectActions) {
 
 void PDFPageFactory::drawImage (NSDictionary* imageActions) {
     NSString *imageType = [RCTConvert NSString:imageActions[@"imageType"]];
-    NSString *imagePath = [RCTConvert NSString:imageActions[@"imagePath"]];
-    NumberPair coords   = getCoords(imageActions);
-    NumberPair dims     = getDims(imageActions);
-    AbstractContentContext::ImageOptions options;
     
     if ([imageType isEqualToString:@"jpg"]) {
+        NSString *imagePath = [RCTConvert NSString:imageActions[@"imagePath"]];
+        NumberPair coords   = getCoords(imageActions);
+        NumberPair dims     = getDims(imageActions);
+        AbstractContentContext::ImageOptions options;
+        
         if (dims.a && dims.b) {
             options.transformationMethod = AbstractContentContext::EImageTransformation::eFit;
             options.fitPolicy            = AbstractContentContext::EFitPolicy::eAlways;
@@ -187,6 +185,9 @@ void PDFPageFactory::drawImage (NSDictionary* imageActions) {
             throw std::invalid_argument(msg.UTF8String);
         }
         context->DrawImage(coords.a.intValue, coords.b.intValue, imagePath.UTF8String, options);
+    }
+    else if ([imageType isEqualToString:@"png"]) {
+        drawImageAsPDF(imageActions);
     }
 }
 
