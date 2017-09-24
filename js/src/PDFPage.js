@@ -136,7 +136,6 @@ export default class PDFPage {
   ) => {
     // TODO: Add logic using ReactNative.Image to automatically preserve image
     // dimensions!
-    // if (imageType !== 'jpg') {
     if (!['png', 'jpg'].includes(imageType)) {
       throw new Error('Only JPG and PNG images are currently supported!');
     }

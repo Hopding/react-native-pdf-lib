@@ -58,8 +58,9 @@ const page1 = PDFPage
     color: '#99FFCC',
   });
 
-// Create a PDF page with text and an image
+// Create a PDF page with text and images
 const jpgPath = // Path to a JPG image on the file system...
+const pngPath = // Path to a PNG image on the file system...
 const page2 = PDFPage
   .create()
   .setMediaBox(250, 250)
@@ -67,6 +68,12 @@ const page2 = PDFPage
   .drawImage(jpgPath, 'jpg', {
      x: 5,
      y: 125,
+     width: 200,
+     height: 100,
+  })
+  .drawImage(pngPath, 'png', {
+     x: 5,
+     y: 25,
      width: 200,
      height: 100,
   });
@@ -107,12 +114,19 @@ const page1 = PDFPage
 
 // Modify second page in document
 const jpgPath = // Path to a JPG image on the file system...
+const pngPath = // Path to a PNG image on the file system...
 const page2 = PDFPage
   .modify(1)
   .drawText('You can add images to modified pages too!')
   .drawImage(jpgPath, 'jpg', {
      x: 5,
      y: 125,
+     width: 200,
+     height: 100,
+  })
+  .drawImage(pngPath, 'png', {
+     x: 5,
+     y: 25,
      width: 200,
      height: 100,
   });
