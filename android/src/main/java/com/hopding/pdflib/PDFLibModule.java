@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.hopding.pdflib.factories.PDPageFactory;
+
 public class PDFLibModule extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
@@ -36,6 +38,7 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
     this.reactContext = reactContext;
 
     PDFBoxResourceLoader.init(reactContext);
+    PDPageFactory.init(reactContext);
   }
 
   @Override

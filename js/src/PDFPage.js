@@ -94,6 +94,7 @@ export default class PDFPage {
       y: 0,
       color: '#000000',
       fontSize: 12,
+      fontName: 'Times New Roman',
       ...options,
       type: 'text',
       value,
