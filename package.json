@@ -47,7 +47,6 @@
     "jest-cli": "^20.0.4"
   },
   "dependencies": {
-    "install": "^0.10.1",
-    "yarn": "^0.27.5"
+    "install": "^0.10.1"
   }
 }
