@@ -158,11 +158,7 @@ RCT_REMAP_METHOD(measureText,
         PDFUsedFont *font  = pdfWriter.GetFontForFile(fontPath.UTF8String);
         PDFUsedFont::TextMeasures measures = font->CalculateTextDimensions(text.UTF8String, (long)fontSize);
         NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys
-          :@(measures.xMin),@"xMin"
-          ,@(measures.yMin),@"yMin"
-          ,@(measures.xMax),@"xMax"
-          ,@(measures.yMax),@"yMax"
-          ,@(measures.width),@"width"
+          :@(measures.width),@"width"
           ,@(measures.height),@"height"
           ,nil];
         resolve(result);
