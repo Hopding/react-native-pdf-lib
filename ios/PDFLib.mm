@@ -145,24 +145,30 @@ RCT_REMAP_METHOD(getAssetPath,
     resolve([[NSBundle mainBundle] pathForResource:assetName ofType:nil]);
 }
 
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(measureText
+RCT_REMAP_METHOD(measureText,
                 :(NSString*)text
                 :(NSString*)fontName
-                :(NSInteger*)fontSize)
+                :(NSInteger*)fontSize
+                 resolverMeasureText:(RCTPromiseResolveBlock)resolve
+                 rejecterMeasureText:(RCTPromiseRejectBlock)reject)
 {
-    PDFWriter pdfWriter;
-    NSString *fontPath = [[NSBundle mainBundle] pathForResource:fontName ofType:@".ttf"];
-    PDFUsedFont *font  = pdfWriter.GetFontForFile(fontPath.UTF8String);
-    PDFUsedFont::TextMeasures measures = font->CalculateTextDimensions(text.UTF8String, (long)fontSize);
-    NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys
-      :@(measures.xMin),@"xMin"
-      ,@(measures.yMin),@"yMin"
-      ,@(measures.xMax),@"xMax"
-      ,@(measures.yMax),@"yMax"
-      ,@(measures.width),@"width"
-      ,@(measures.height),@"height"
-      ,nil];
-    return result;
+    try {
+        PDFWriter pdfWriter;
+        NSString *fontPath = [[NSBundle mainBundle] pathForResource:fontName ofType:@".ttf"];
+        PDFUsedFont *font  = pdfWriter.GetFontForFile(fontPath.UTF8String);
+        PDFUsedFont::TextMeasures measures = font->CalculateTextDimensions(text.UTF8String, (long)fontSize);
+        NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys
+          :@(measures.xMin),@"xMin"
+          ,@(measures.yMin),@"yMin"
+          ,@(measures.xMax),@"xMax"
+          ,@(measures.yMax),@"yMax"
+          ,@(measures.width),@"width"
+          ,@(measures.height),@"height"
+          ,nil];
+        resolve(result);
+    } catch (NSException *exception) {
+        reject(@"error", exception.reason, nil);
+    }
 }
 
 @end
