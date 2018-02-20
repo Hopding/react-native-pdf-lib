@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    FreeType utility functions for bitmaps (specification).              */
 /*                                                                         */
-/*  Copyright 2004-2018 by                                                 */
+/*  Copyright 2004, 2005, 2006, 2008 by                                    */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -16,8 +16,8 @@
 /***************************************************************************/
 
 
-#ifndef FTBITMAP_H_
-#define FTBITMAP_H_
+#ifndef __FTBITMAP_H__
+#define __FTBITMAP_H__
 
 
 #include <ft2build.h>
@@ -45,9 +45,7 @@ FT_BEGIN_HEADER
   /*    Handling FT_Bitmap objects.                                        */
   /*                                                                       */
   /* <Description>                                                         */
-  /*    This section contains functions for handling @FT_Bitmap objects.   */
-  /*    Note that none of the functions changes the bitmap's `flow' (as    */
-  /*    indicated by the sign of the `pitch' field in `FT_Bitmap').        */
+  /*    This section contains functions for converting FT_Bitmap objects.  */
   /*                                                                       */
   /*************************************************************************/
 
@@ -55,7 +53,7 @@ FT_BEGIN_HEADER
   /*************************************************************************/
   /*                                                                       */
   /* <Function>                                                            */
-  /*    FT_Bitmap_Init                                                     */
+  /*    FT_Bitmap_New                                                      */
   /*                                                                       */
   /* <Description>                                                         */
   /*    Initialize a pointer to an @FT_Bitmap structure.                   */
@@ -63,14 +61,6 @@ FT_BEGIN_HEADER
   /* <InOut>                                                               */
   /*    abitmap :: A pointer to the bitmap structure.                      */
   /*                                                                       */
-  /* <Note>                                                                */
-  /*    A deprecated name for the same function is `FT_Bitmap_New'.        */
-  /*                                                                       */
-  FT_EXPORT( void )
-  FT_Bitmap_Init( FT_Bitmap  *abitmap );
-
-
-  /* deprecated */
   FT_EXPORT( void )
   FT_Bitmap_New( FT_Bitmap  *abitmap );
 
@@ -97,7 +87,7 @@ FT_BEGIN_HEADER
   FT_EXPORT( FT_Error )
   FT_Bitmap_Copy( FT_Library        library,
                   const FT_Bitmap  *source,
-                  FT_Bitmap        *target );
+                  FT_Bitmap        *target);
 
 
   /*************************************************************************/
@@ -132,9 +122,6 @@ FT_BEGIN_HEADER
   /*    If you want to embolden the bitmap owned by a @FT_GlyphSlotRec,    */
   /*    you should call @FT_GlyphSlot_Own_Bitmap on the slot first.        */
   /*                                                                       */
-  /*    Bitmaps in @FT_PIXEL_MODE_GRAY2 and @FT_PIXEL_MODE_GRAY@ format    */
-  /*    are converted to @FT_PIXEL_MODE_GRAY format (i.e., 8bpp).          */
-  /*                                                                       */
   FT_EXPORT( FT_Error )
   FT_Bitmap_Embolden( FT_Library  library,
                       FT_Bitmap*  bitmap,
@@ -148,9 +135,9 @@ FT_BEGIN_HEADER
   /*    FT_Bitmap_Convert                                                  */
   /*                                                                       */
   /* <Description>                                                         */
-  /*    Convert a bitmap object with depth 1bpp, 2bpp, 4bpp, 8bpp or 32bpp */
-  /*    to a bitmap object with depth 8bpp, making the number of used      */
-  /*    bytes line (a.k.a. the `pitch') a multiple of `alignment'.         */
+  /*    Convert a bitmap object with depth 1bpp, 2bpp, 4bpp, or 8bpp to a  */
+  /*    bitmap object with depth 8bpp, making the number of used bytes per */
+  /*    line (a.k.a. the `pitch') a multiple of `alignment'.               */
   /*                                                                       */
   /* <Input>                                                               */
   /*    library   :: A handle to a library object.                         */
@@ -210,7 +197,7 @@ FT_BEGIN_HEADER
   /*    FT_Bitmap_Done                                                     */
   /*                                                                       */
   /* <Description>                                                         */
-  /*    Destroy a bitmap object initialized with @FT_Bitmap_Init.          */
+  /*    Destroy a bitmap object created with @FT_Bitmap_New.               */
   /*                                                                       */
   /* <Input>                                                               */
   /*    library :: A handle to a library object.                           */
@@ -234,7 +221,7 @@ FT_BEGIN_HEADER
 
 FT_END_HEADER
 
-#endif /* FTBITMAP_H_ */
+#endif /* __FTBITMAP_H__ */
 
 
 /* END */
