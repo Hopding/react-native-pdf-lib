@@ -152,6 +152,51 @@ PDFDocument
   });
 ```
 
+### Using custom fonts
+
+The library includes Times New Roman as the default font. For using other fonts, you must include any of them like this.
+
+1. If you dont already have some folder for your assets, create one ('./assets/fonts' for example)
+2. Ensure your TTF file is named the same as the internal font "Full Name" so it works both on iOS and Android (more on this here https://medium.com/react-native-training/react-native-custom-fonts-ccc9aacf9e5e)
+3. Copy the TTF file on the ./assets/fonts folder
+4. Edit your package.json and tell react-native about your new assets folder like this:
+
+```json
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
+  }
+```
+
+This way, you could start using your shiny custom font on your PDF's like this:
+
+```javascript
+const page1 = PDFPage
+  .create()
+  .setMediaBox(200, 200)
+  .drawText('This text is using the font Franklin Gothic Medium!', {
+    x: 5,
+    y: 235,
+    color: '#F62727',
+    fontName: 'Franklin Gothic Medium'
+  })
+```
+
+### Measuring text
+
+Measuring some text can be very useful, for example for centering some title, etc.
+
+```javascript
+return PDFLib.measureText(
+      'My Centered Title',
+      'Franklin Gothic Medium',
+      14
+    ).then(result => {
+    console.log('The text size is: ', result);
+  })
+```
+
 ## Manual installation
 
 #### iOS

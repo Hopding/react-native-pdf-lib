@@ -9,21 +9,15 @@
 #include "MyStringBuf.h"
 
 PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, PDFPage* page) {
-    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"Times New Roman" ofType:@".ttf"];
-
     this->pdfWriter    = pdfWriter;
     this->page         = page;
     this->modifiedPage = nullptr;
-    this->font         = pdfWriter->GetFontForFile(fontPath.UTF8String);
 }
 
 PDFPageFactory::PDFPageFactory (PDFWriter* pdfWriter, PDFModifiedPage* page) {
-    NSString *fontPath = [[NSBundle mainBundle] pathForResource:@"Times New Roman" ofType:@".ttf"];
-    
     this->pdfWriter    = pdfWriter;
     this->modifiedPage = page;
     this->page         = nullptr;
-    this->font         = pdfWriter->GetFontForFile(fontPath.UTF8String);
 }
 
 ResourcesDictionary* PDFPageFactory::getResourcesDict () {
@@ -141,10 +135,14 @@ void PDFPageFactory::addPDFImageFormXObject (NSDictionary* pdfImageActions) {
 
 void PDFPageFactory::drawText (NSDictionary* textActions) {
     NSString* value    = [RCTConvert NSString:textActions[@"value"]];
+    NSString* fontName = [RCTConvert NSString:textActions[@"fontName"]];
     NSInteger fontSize = [RCTConvert NSInteger:textActions[@"fontSize"]];
     NumberPair coords  = getCoords(textActions);
     unsigned hexColor  = hexIntFromString(textActions[@"color"]);
-    
+
+    NSString *fontPath = [[NSBundle mainBundle] pathForResource:fontName ofType:@".ttf"];
+    PDFUsedFont* font  = pdfWriter->GetFontForFile(fontPath.UTF8String);
+
     AbstractContentContext::TextOptions textOptions(font, fontSize, AbstractContentContext::eRGB, hexColor);
     context->WriteText(coords.a.intValue, coords.b.intValue, value.UTF8String, textOptions);
 }

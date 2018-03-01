@@ -3,6 +3,8 @@ package com.hopding.pdflib.factories;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.RequiresPermission;
+import android.content.Context;
+import android.content.res.AssetManager;
 
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.react.bridge.NoSuchKeyException;
@@ -12,7 +14,8 @@ import com.tom_roush.pdfbox.pdmodel.PDDocument;
 import com.tom_roush.pdfbox.pdmodel.PDPage;
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
-import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
+import com.tom_roush.pdfbox.pdmodel.font.PDFont;
+import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -28,10 +31,17 @@ import java.io.InputStream;
  * to it, such as drawing text or images. The PDPage object can
  * be created anew, or from an existing document.
  */
-class PDPageFactory {
+public class PDPageFactory {
     protected PDDocument document;
     protected PDPage page;
     protected PDPageContentStream stream;
+    private static AssetManager ASSET_MANAGER = null;
+
+    public static void init(Context context){
+        if (ASSET_MANAGER == null) {
+            ASSET_MANAGER = context.getApplicationContext().getAssets();
+        }
+    }
 
     private PDPageFactory(PDDocument document, PDPage page, boolean appendContent) throws IOException {
         this.document = document;
@@ -84,14 +94,17 @@ class PDPageFactory {
 
     private void drawText(ReadableMap textActions) throws NoSuchKeyException, IOException {
         String value = textActions.getString("value");
+        String fontName = textActions.getString("fontName");
         int fontSize = textActions.getInt("fontSize");
 
         Integer[] coords = getCoords(textActions, true);
         int[] rgbColor   = hexStringToRGB(textActions.getString("color"));
 
+        PDFont font = PDType0Font.load(document, ASSET_MANAGER.open("fonts/" + fontName + ".ttf"));
+
         stream.beginText();
         stream.setNonStrokingColor(rgbColor[0], rgbColor[1], rgbColor[2]);
-        stream.setFont(PDType1Font.TIMES_ROMAN, fontSize);
+        stream.setFont(font, fontSize);
         stream.newLineAtOffset(coords[0], coords[1]);
         stream.showText(value);
         stream.endText();

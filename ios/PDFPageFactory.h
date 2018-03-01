@@ -18,7 +18,6 @@ private:
     PDFPage*                page;
     PDFModifiedPage*        modifiedPage;
     AbstractContentContext* context;
-    PDFUsedFont*            font;
     std::map<NSString*, unsigned long> formXObjectMap;
     
 //    PDFPageFactory  (PDFWriter*, AbstractContentContext*);

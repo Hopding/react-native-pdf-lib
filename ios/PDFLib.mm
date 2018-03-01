@@ -3,6 +3,7 @@
 
 #include <PDFWriter.h>
 #include <PDFPage.h>
+#include <PDFUsedFont.h>
 #include <PageContentContext.h>
 #include <libgen.h>
 #include <PDFModifiedPage.h>
@@ -142,6 +143,28 @@ RCT_REMAP_METHOD(getAssetPath,
                  rejecterUnloadAsset:(RCTPromiseRejectBlock)reject)
 {
     resolve([[NSBundle mainBundle] pathForResource:assetName ofType:nil]);
+}
+
+RCT_REMAP_METHOD(measureText,
+                :(NSString*)text
+                :(NSString*)fontName
+                :(NSInteger*)fontSize
+                 resolverMeasureText:(RCTPromiseResolveBlock)resolve
+                 rejecterMeasureText:(RCTPromiseRejectBlock)reject)
+{
+    try {
+        PDFWriter pdfWriter;
+        NSString *fontPath = [[NSBundle mainBundle] pathForResource:fontName ofType:@".ttf"];
+        PDFUsedFont *font  = pdfWriter.GetFontForFile(fontPath.UTF8String);
+        PDFUsedFont::TextMeasures measures = font->CalculateTextDimensions(text.UTF8String, (long)fontSize);
+        NSDictionary *result = [[NSDictionary alloc] initWithObjectsAndKeys
+          :@(measures.width),@"width"
+          ,@(measures.height),@"height"
+          ,nil];
+        resolve(result);
+    } catch (NSException *exception) {
+        reject(@"error", exception.reason, nil);
+    }
 }
 
 @end
