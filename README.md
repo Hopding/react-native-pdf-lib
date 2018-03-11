@@ -168,6 +168,7 @@ The library includes Times New Roman as the default font. For using other fonts,
     ]
   }
 ```
+5. Run `react-native link` (so the font will be bundled with your app's assets).
 
 This way, you could start using your shiny custom font on your PDF's like this:
 
