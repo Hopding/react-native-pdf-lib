@@ -82,7 +82,7 @@ const page2 = PDFPage
 const docsDir = await PDFLib.getDocumentsDirectory();
 const pdfPath = `${docsDir}/sample.pdf`;
 PDFDocument
-  .create(path)
+  .create(pdfPath)
   .addPages(page1, page2)
   .write() // Returns a promise that resolves with the PDF's path
   .then(path => {
