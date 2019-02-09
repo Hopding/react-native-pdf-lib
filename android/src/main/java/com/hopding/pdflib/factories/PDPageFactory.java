@@ -129,13 +129,9 @@ public class PDPageFactory {
         if (imageType.equals("jpg") || imageType.equals("png")) {
             // Create PDImageXObject
             PDImageXObject image = null;
-            if (imageType.equals("jpg")) {
-                Bitmap bmpImage = BitmapFactory.decodeFile(imagePath);
-                image = JPEGFactory.createFromImage(document, bmpImage);
-            }
-            else { // imageType.equals("png") == true
-                InputStream in = new FileInputStream(new File(imagePath));
-                Bitmap bmp = BitmapFactory.decodeStream(in);
+            if (imageType.equals("jpg") || imageType.equals("png") == true) {
+                InputStream is = ASSET_MANAGER.open(imagePath);
+                Bitmap bmp = BitmapFactory.decodeStream(is);
                 image = LosslessFactory.createFromImage(document, bmp);
             }
 
