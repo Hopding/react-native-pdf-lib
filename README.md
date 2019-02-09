@@ -113,8 +113,8 @@ const page1 = PDFPage
   });
 
 // Modify second page in document
-const jpgPath = // Path to a JPG image on the file system...
-const pngPath = // Path to a PNG image on the file system...
+const jpgPath = // in iOS Path to a JPG image on the file system... in Android path to the assert
+const pngPath = // in iOS Path to a PNG image on the file system... in Android path to the assert
 const page2 = PDFPage
   .modify(1)
   .drawText('You can add images to modified pages too!')
