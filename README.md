@@ -118,18 +118,28 @@ const pngPath = // in iOS Path to a PNG image on the file system... in Android p
 const page2 = PDFPage
   .modify(1)
   .drawText('You can add images to modified pages too!')
-  .drawImage(jpgPath, 'jpg', {
-     x: 5,
-     y: 125,
-     width: 200,
-     height: 100,
-  })
-  .drawImage(pngPath, 'png', {
-     x: 5,
-     y: 25,
-     width: 200,
-     height: 100,
-  });
+  .drawImage(
+    jpgPath, 
+    'jpg',
+    {
+      x: 5,
+      y: 125,
+      width: 200,
+      height: 100,
+    },
+    'assets' // 'assets' to get image from Android assets 'path' to get image from imagePath
+  )
+  .drawImage(
+    pngPath,
+    'png',
+    {
+      x: 5,
+      y: 25,
+      width: 200,
+      height: 100,
+    },
+    'path' // 'assets' to get image from Android assets 'path' to get image from imagePath
+   );
 
 // Create a PDF page to add to document
 const page3 = PDFPage
