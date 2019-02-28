@@ -134,25 +134,25 @@ export default class PDFPage {
         y?: number,
         width?: number,
         height?: number,
-      }={},
-      imageSource: string
+        imageSource?: string
+      }={}
   ) => {
     // TODO: Add logic using ReactNative.Image to automatically preserve image
     // dimensions!
     if (!['png', 'jpg'].includes(imageType)) {
       throw new Error('Only JPG and PNG images are currently supported!');
     }
-    if (!['assets', 'path'].includes(imageSource)) {
+    if (typeof options.imageSource !== 'undefined' && !['assets', 'path'].includes(options.imageSource)) {
       throw new Error('Only images from "assets" and "path" are currently supported!');
     }
     const imageAction: ImageAction = {
       x: 0,
       y: 0,
+      imageSource: 'path',
       ...options,
       type: 'image',
       imagePath,
-      imageType,
-      imageSource
+      imageType
     };
     this.page.actions.push(imageAction);
     return this;
