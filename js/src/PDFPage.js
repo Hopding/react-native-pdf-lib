@@ -142,8 +142,8 @@ export default class PDFPage {
     if (!['png', 'jpg'].includes(imageType)) {
       throw new Error('Only JPG and PNG images are currently supported!');
     }
-    if (!['asserts', 'path'].includes(imageSource)) {
-      throw new Error('Only images from "asserts" and "path" are currently supported!');
+    if (!['assets', 'path'].includes(imageSource)) {
+      throw new Error('Only images from "assets" and "path" are currently supported!');
     }
     const imageAction: ImageAction = {
       x: 0,

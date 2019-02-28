@@ -144,7 +144,7 @@ public class PDPageFactory {
                }
             }
 
-            if (imageSource.equals("asserts")) {
+            if (imageSource.equals("assets")) {
                 InputStream is = ASSET_MANAGER.open(imagePath);
                 Bitmap bmp = BitmapFactory.decodeStream(is);
                 image = LosslessFactory.createFromImage(document, bmp);
