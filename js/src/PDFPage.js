@@ -148,7 +148,7 @@ export default class PDFPage {
     const imageAction: ImageAction = {
       x: 0,
       y: 0,
-      imageSource: 'path',
+      source: 'path',
       ...options,
       type: 'image',
       imagePath,

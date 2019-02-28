@@ -126,8 +126,8 @@ const page2 = PDFPage
       y: 125,
       width: 200,
       height: 100,
-    },
-    'assets' // 'assets' to get image from Android assets 'path' to get image from imagePath
+      source: 'assets' // 'assets' to get image from Android assets 'path' to get image from imagePath
+    }
   )
   .drawImage(
     pngPath,
@@ -137,8 +137,8 @@ const page2 = PDFPage
       y: 25,
       width: 200,
       height: 100,
-    },
-    'path' // 'assets' to get image from Android assets 'path' to get image from imagePath
+      source: 'path' // 'assets' to get image from Android assets 'path' to get image from imagePath
+    }
    );
 
 // Create a PDF page to add to document

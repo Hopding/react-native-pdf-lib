@@ -123,7 +123,7 @@ public class PDPageFactory {
     private void drawImage(ReadableMap imageActions) throws NoSuchKeyException, IOException {
         String imageType = imageActions.getString("imageType");
         String imagePath = imageActions.getString("imagePath");
-        String imageSource = imageActions.getString("imageSource");
+        String imageSource = imageActions.getString("source");
 
         Integer[] coords = getCoords(imageActions, true);
         Integer[] dims   = getDims(imageActions, false);
