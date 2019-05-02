@@ -123,19 +123,30 @@ public class PDPageFactory {
     private void drawImage(ReadableMap imageActions) throws NoSuchKeyException, IOException {
         String imageType = imageActions.getString("imageType");
         String imagePath = imageActions.getString("imagePath");
+        String imageSource = imageActions.getString("source");
+
         Integer[] coords = getCoords(imageActions, true);
         Integer[] dims   = getDims(imageActions, false);
 
         if (imageType.equals("jpg") || imageType.equals("png")) {
             // Create PDImageXObject
             PDImageXObject image = null;
-            if (imageType.equals("jpg")) {
-                Bitmap bmpImage = BitmapFactory.decodeFile(imagePath);
-                image = JPEGFactory.createFromImage(document, bmpImage);
+
+            if (imageSource.equals("path")) {
+               if (imageType.equals("jpg")) {
+                  Bitmap bmpImage = BitmapFactory.decodeFile(imagePath);
+                  image = JPEGFactory.createFromImage(document, bmpImage);
+               }
+               else { // imageType.equals("png") == true
+                   InputStream in = new FileInputStream(new File(imagePath));
+                   Bitmap bmp = BitmapFactory.decodeStream(in);
+                   image = LosslessFactory.createFromImage(document, bmp);
+               }
             }
-            else { // imageType.equals("png") == true
-                InputStream in = new FileInputStream(new File(imagePath));
-                Bitmap bmp = BitmapFactory.decodeStream(in);
+
+            if (imageSource.equals("assets")) {
+                InputStream is = ASSET_MANAGER.open(imagePath);
+                Bitmap bmp = BitmapFactory.decodeStream(is);
                 image = LosslessFactory.createFromImage(document, bmp);
             }
 

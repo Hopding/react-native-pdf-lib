@@ -22,6 +22,7 @@ export type ImageAction = {
   type: 'image',
   imagePath: string,
   imageType: string,
+  imageSource: string,
   x: number,
   y: number,
   width?: number, // If don't have width & height, will use actual dimensions
@@ -126,27 +127,32 @@ export default class PDFPage {
   }
 
   drawImage = (
-    imagePath: string,
-    imageType: string,
-    options: {
-      x?: number,
-      y?: number,
-      width?: number,
-      height?: number,
-    }={}
+      imagePath: string,
+      imageType: string,
+      options: {
+        x?: number,
+        y?: number,
+        width?: number,
+        height?: number,
+        imageSource?: string
+      }={}
   ) => {
     // TODO: Add logic using ReactNative.Image to automatically preserve image
     // dimensions!
     if (!['png', 'jpg'].includes(imageType)) {
       throw new Error('Only JPG and PNG images are currently supported!');
     }
+    if (typeof options.imageSource !== 'undefined' && !['assets', 'path'].includes(options.imageSource)) {
+      throw new Error('Only images from "assets" and "path" are currently supported!');
+    }
     const imageAction: ImageAction = {
       x: 0,
       y: 0,
+      source: 'path',
       ...options,
       type: 'image',
       imagePath,
-      imageType,
+      imageType
     };
     this.page.actions.push(imageAction);
     return this;
