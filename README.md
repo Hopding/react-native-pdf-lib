@@ -1,35 +1,46 @@
 # react-native-pdf-lib
 
 ## Purpose
+
 This library's purpose is to fill the gap that currently exists in the React Native ecosystem for PDF creation and editing. It aims to provide an easy, simple, and consistent API for both **creating** new and **editing** existing PDF documents in React Native. This library supports Android devices >= API 18, and iOS devices >= iOS 8.0.
 
 ## Thanks
+
 This library would not be possible without the following projects:
 
-* https://github.com/galkahana/PDF-Writer is used for handling PDFs on iOS. (The static binaries for v3.6 are built with [hummus-ios-build](https://github.com/Hopding/hummus-ios-build)).
-* https://github.com/TomRoush/PdfBox-Android is used for handling PDFs on Android.
+- https://github.com/galkahana/PDF-Writer is used for handling PDFs on iOS. (The static binaries for v3.6 are built with [hummus-ios-build](https://github.com/Hopding/hummus-ios-build)).
+- https://github.com/TomRoush/PdfBox-Android is used for handling PDFs on Android.
 
 ## Alternatives
+
 Create PDFs from HTML: https://github.com/christopherdro/react-native-html-to-pdf
 
+## React Native Version
+
+If you're using React Native >= 60, you want to use v1.0.0 of this library.
+If you're using React Native <= 59, you want to use v0.2.1 of this library.
+
 ## Mostly automatic installation
+
 See [here](https://github.com/Hopding/react-native-pdf-lib#manual-installation) for manual installation instructions (manual installation should not be necessary).
 
 1. `$ npm install react-native-pdf-lib --save`
 2. `$ react-native link react-native-pdf-lib`
 3. For Android, add the following to your app's `build.gradle` file:
-    ```
-    android {
-      ...
-      dexOptions {
-          jumboMode = true
-      }
-      ...
-    }
-    ```
+   ```
+   android {
+     ...
+     dexOptions {
+         jumboMode = true
+     }
+     ...
+   }
+   ```
 
 ## Getting started
+
 ### Create a New PDF Document
+
 ```javascript
 // Import from 'react-native-pdf-lib'
 import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
@@ -92,6 +103,7 @@ PDFDocument
 ```
 
 ### Modify an Existing PDF Document
+
 ```javascript
 // Import from 'react-native-pdf-lib'
 import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
@@ -119,7 +131,7 @@ const page2 = PDFPage
   .modify(1)
   .drawText('You can add images to modified pages too!')
   .drawImage(
-    jpgPath, 
+    jpgPath,
     'jpg',
     {
       x: 5,
@@ -178,20 +190,20 @@ The library includes Times New Roman as the default font. For using other fonts,
     ]
   }
 ```
+
 5. Run `react-native link` (so the font will be bundled with your app's assets).
 
 This way, you could start using your shiny custom font on your PDF's like this:
 
 ```javascript
-const page1 = PDFPage
-  .create()
+const page1 = PDFPage.create()
   .setMediaBox(200, 200)
-  .drawText('This text is using the font Franklin Gothic Medium!', {
+  .drawText("This text is using the font Franklin Gothic Medium!", {
     x: 5,
     y: 235,
-    color: '#F62727',
-    fontName: 'Franklin Gothic Medium'
-  })
+    color: "#F62727",
+    fontName: "Franklin Gothic Medium"
+  });
 ```
 
 ### Measuring text
@@ -200,12 +212,12 @@ Measuring some text can be very useful, for example for centering some title, et
 
 ```javascript
 return PDFLib.measureText(
-      'My Centered Title',
-      'Franklin Gothic Medium',
-      14
-    ).then(result => {
-    console.log('The text size is: ', result);
-  })
+  "My Centered Title",
+  "Franklin Gothic Medium",
+  14
+).then(result => {
+  console.log("The text size is: ", result);
+});
 ```
 
 ## Manual installation
@@ -220,25 +232,27 @@ return PDFLib.measureText(
 #### Android
 
 1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import com.reactlibrary.PdfLibPackage;` to the imports at the top of the file
-  - Add `new PdfLibPackage()` to the list returned by the `getPackages()` method
+
+- Add `import com.reactlibrary.PdfLibPackage;` to the imports at the top of the file
+- Add `new PdfLibPackage()` to the list returned by the `getPackages()` method
+
 2. Append the following lines to `android/settings.gradle`:
-  	```
-  	include ':react-native-pdf-lib'
-  	project(':react-native-pdf-lib').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-pdf-lib/android')
-  	```
+   ```
+   include ':react-native-pdf-lib'
+   project(':react-native-pdf-lib').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-pdf-lib/android')
+   ```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
-      compile project(':react-native-pdf-lib')
-  	```
+   ```
+     compile project(':react-native-pdf-lib')
+   ```
 4. For Android, add the following to your app's `build.gradle` file:
-    ```
-    android {
-      ...
-      // Add this section:
-      dexOptions {
-          jumboMode = true
-      }
-      ...
-    }
-    ```
+   ```
+   android {
+     ...
+     // Add this section:
+     dexOptions {
+         jumboMode = true
+     }
+     ...
+   }
+   ```
