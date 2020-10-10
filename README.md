@@ -30,9 +30,10 @@ See [here](https://github.com/Hopding/react-native-pdf-lib#manual-installation) 
    ```
    android {
      ...
-     dexOptions {
-         jumboMode = true
-     }
+     defaultConfig {
+      
+        multiDexEnabled true
+    }
      ...
    }
    ```
