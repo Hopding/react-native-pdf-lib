@@ -1,3 +1,5 @@
+# Fork to fix error -> https://github.com/Hopding/react-native-pdf-lib/issues/57
+
 # react-native-pdf-lib
 
 ## Purpose
