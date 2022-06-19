@@ -4,7 +4,7 @@ package com.hopding.pdflib;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 
 import com.facebook.react.bridge.NoSuchKeyException;
@@ -23,7 +23,7 @@ import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;
 import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
-import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
+import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,7 +71,7 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
     } catch (NoSuchKeyException e) {
       e.printStackTrace();
       promise.reject(e);
-    } catch (IOException e ) {
+    } catch (IOException e) {
       e.printStackTrace();
       promise.reject(e);
     }
@@ -148,20 +148,20 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void getAssetPath(String assetName, Promise promise) {
     promise.reject(new Exception(
-      "PDFLib.getAssetPath() is only available on iOS. Try PDFLib.unloadAsset()"
-    ));
+        "PDFLib.getAssetPath() is only available on iOS. Try PDFLib.unloadAsset()"));
   }
 
   @ReactMethod
   public void measureText(String text, String fontName, int fontSize, Promise promise) {
     try {
       PDDocument document = new PDDocument();
-      PDFont font = PDType0Font.load(document, reactContext.getApplicationContext().getAssets().open("fonts/" + fontName + ".ttf"));
+      PDFont font = PDType0Font.load(document,
+          reactContext.getApplicationContext().getAssets().open("fonts/" + fontName + ".ttf"));
       float width = font.getStringWidth(text) / 1000 * fontSize;
       float height = (font.getFontDescriptor().getCapHeight()) / 1000 * fontSize;
       WritableMap map = Arguments.createMap();
-      map.putInt("width", (int)width);
-      map.putInt("height", (int)height);
+      map.putInt("width", (int) width);
+      map.putInt("height", (int) height);
       promise.resolve(map);
     } catch (IOException e) {
       promise.reject(e);

@@ -13,11 +13,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.0'
-
-    dexOptions {
-        jumboMode true
-    }
 
     defaultConfig {
         minSdkVersion 16
@@ -35,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.tom_roush:pdfbox-android:1.8.9.1'
+    implementation 'com.tom-roush:pdfbox-android:2.0.22.0'
     implementation 'com.facebook.react:react-native:+'
 }
   
