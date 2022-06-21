@@ -1,7 +1,7 @@
 {
-  "name": "react-native-pdf-lib",
-  "version": "1.0.0",
-  "description": "A react native library for handling generating PDFs",
+  "name": "@shogobg/react-native-pdf",
+  "version": "1.0.1",
+  "description": "A react native library for working with PDF files",
   "main": "index.js",
   "scripts": {
     "test": "jest"
@@ -12,11 +12,11 @@
   "author": "Andrew Dillon",
   "license": "Apache-2.0",
   "peerDependencies": {},
-  "repository": "git+https://github.com/Hopding/react-native-pdf-lib.git",
+  "repository": "git+https://github.com/Shogobg/rn-pdf-lib.git",
   "bugs": {
-    "url": "https://github.com/Hopding/react-native-pdf-lib/issues"
+    "url": "https://github.com/Shogobg/rn-pdf-lib/issues"
   },
-  "homepage": "https://github.com/Hopding/react-native-pdf-lib#readme",
+  "homepage": "https://github.com/Shogobg/rn-pdf-lib#readme",
   "rnpm": {
     "assets": [
       "./assets"

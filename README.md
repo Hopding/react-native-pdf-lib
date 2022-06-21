@@ -1,4 +1,6 @@
-# react-native-pdf-lib
+# react-native-pdf
+
+## This is a fork which I made because original project seems unmaintained and I needed the updated code
 
 ## Purpose
 
@@ -17,12 +19,15 @@ Create PDFs from HTML: https://github.com/christopherdro/react-native-html-to-pd
 
 ## React Native Version
 
-If you're using React Native >= 60, you want to use v1.0.0 of this library.
-If you're using React Native <= 59, you want to use v0.2.1 of this library.
+I recommend using the latest version of this library with React Native >= 60.
+Older versions are very slow, which is one of the reasons I've created this fork.
+
+If you're using React Native >= 60, you have to use v1.0.0+ of this library.
+If you're using React Native <= 59, you have to use v0.2.1 of this library.
 
 ## Mostly automatic installation
 
-See [here](https://github.com/Hopding/react-native-pdf-lib#manual-installation) for manual installation instructions (manual installation should not be necessary).
+See [here](#manual-installation) for manual installation instructions (manual installation should not be necessary).
 
 1. `$ npm install react-native-pdf-lib --save`
 2. `$ react-native link react-native-pdf-lib`
@@ -202,7 +207,7 @@ const page1 = PDFPage.create()
     x: 5,
     y: 235,
     color: "#F62727",
-    fontName: "Franklin Gothic Medium"
+    fontName: "Franklin Gothic Medium",
   });
 ```
 
@@ -215,7 +220,7 @@ return PDFLib.measureText(
   "My Centered Title",
   "Franklin Gothic Medium",
   14
-).then(result => {
+).then((result) => {
   console.log("The text size is: ", result);
 });
 ```
@@ -256,3 +261,9 @@ return PDFLib.measureText(
      ...
    }
    ```
+
+## Development
+
+It is not possible to test changes to a native library independently of a runnable project.
+This library (and any react-native library with native code) depends on modules that will only exist if the library is built in the context of a full, runnable project.
+To test any changes, create a new react native project, and then clone the repository for react-native-pdf-lib into that project's node_modules directory. Next run react-native link on that project. Then, when you make changes to the library's code, you should be able to rebuild the runnable project to see the results.

@@ -2,7 +2,7 @@ package com.hopding.pdflib.factories;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.RequiresPermission;
+import androidx.annotation.RequiresPermission;
 import android.content.Context;
 import android.content.res.AssetManager;
 
