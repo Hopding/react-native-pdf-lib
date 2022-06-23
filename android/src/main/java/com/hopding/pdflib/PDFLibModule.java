@@ -154,18 +154,10 @@ public class PDFLibModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void measureText(String text, String fontName, int fontSize, Promise promise) {
     try {
-      PDDocument document = new PDDocument();
-      PDFont font = PDType0Font.load(document,
-          reactContext.getApplicationContext().getAssets().open("fonts/" + fontName + ".ttf"));
-      float width = font.getStringWidth(text) / 1000 * fontSize;
-      float height = (font.getFontDescriptor().getCapHeight()) / 1000 * fontSize;
-      WritableMap map = Arguments.createMap();
-      map.putInt("width", (int) width);
-      map.putInt("height", (int) height);
-      promise.resolve(map);
+      WritableMap textSize = PDPageFactory.getTextSize(text, fontName, fontSize, reactContext.getApplicationContext().getAssets());
+      promise.resolve(textSize);
     } catch (IOException e) {
       promise.reject(e);
     }
   }
-
 }

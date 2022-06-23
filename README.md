@@ -211,9 +211,37 @@ const page1 = PDFPage.create()
   });
 ```
 
+### Centering text
+
+```JavaScript
+const page1 = PDFPage.create()
+  .setMediaBox(200, 200)
+  .drawText("This text is using the font Franklin Gothic Medium!", {
+      x: 5,
+      y: 235,
+      fieldSize: 240,
+      textAlign: "center",
+      color: textColor,
+      fontName: 'MSMincho',
+    })
+```
+
+```JavaScript
+const page1 = PDFPage.create()
+  .setMediaBox(200, 200)
+  .drawText("This text is using the font Franklin Gothic Medium!", {
+      x: 5,
+      y: 235,
+      fieldSize: 240,
+      textAlign: "right",
+      color: textColor,
+      fontName: 'MSMincho',
+    })
+```
+
 ### Measuring text
 
-Measuring some text can be very useful, for example for centering some title, etc.
+If you need to know the text's size for some reason.
 
 ```javascript
 return PDFLib.measureText(
