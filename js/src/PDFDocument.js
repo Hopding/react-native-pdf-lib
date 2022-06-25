@@ -1,4 +1,3 @@
-/* @flow */
 import PDFLib from './PDFLib';
 import PDFPage from './PDFPage';
 

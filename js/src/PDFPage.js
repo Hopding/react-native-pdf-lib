@@ -1,5 +1,3 @@
-/* @flow */
-
 export type TextAction = {
   type: 'text',
   x: number,
