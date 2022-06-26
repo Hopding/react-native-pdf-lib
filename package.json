@@ -1,6 +1,6 @@
 {
   "name": "@shogobg/react-native-pdf",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A react native library for working with PDF files",
   "main": "index.js",
   "types": "index.d.ts",

@@ -28,6 +28,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.HashMap;
+
 /**
  * Create a PDPage object and applies actions described in JSON
  * to it, such as drawing text or images. The PDPage object can
@@ -74,13 +76,30 @@ public class PDPageFactory {
 
     /* ----- Page actions (based on JSON structures sent over bridge) ----- */
     private void applyActions(ReadableMap pageActions) throws IOException {
+        HashMap<String, PDFont> fonts = new HashMap<String, PDFont>();
+
         ReadableArray actions = pageActions.getArray("actions");
         for (int i = 0; i < actions.size(); i++) {
             ReadableMap action = actions.getMap(i);
             String type = action.getString("type");
 
             if (type.equals("text"))
-                this.drawText(action);
+            {
+                String value = action.getString("value");
+                String fontName = action.getString("fontName");
+                int fontSize = action.getInt("fontSize");
+                String textAlign = action.hasKey("textAlign") ? action.getString("textAlign") : "left";
+                int fieldSize = action.hasKey("fieldSize") ? action.getInt("fieldSize") : 0;
+
+                Integer[] coords = getCoords(action, true);
+                int[] rgbColor = hexStringToRGB(action.getString("color"));
+
+                if(!fonts.containsKey(fontName)){
+                    PDFont font = PDType0Font.load(document, ASSET_MANAGER.open("fonts/" + fontName + ".ttf"));
+                    fonts.put(fontName, font);
+                }
+                this.drawText(value, fontName, fontSize, textAlign, fieldSize, coords, rgbColor, fonts.get(fontName));
+            }
             else if (type.equals("rectangle"))
                 this.drawRectangle(action);
             else if (type.equals("image"))
@@ -94,18 +113,7 @@ public class PDPageFactory {
         page.setMediaBox(new PDRectangle(coords[0], coords[1], dims[0], dims[1]));
     }
 
-    private void drawText(ReadableMap textActions) throws NoSuchKeyException, IOException {
-        String value = textActions.getString("value");
-        String fontName = textActions.getString("fontName");
-        int fontSize = textActions.getInt("fontSize");
-        String textAlign = textActions.hasKey("textAlign") ? textActions.getString("textAlign") : "left";
-        int fieldSize = textActions.hasKey("fieldSize") ? textActions.getInt("fieldSize") : 0;
-
-        Integer[] coords = getCoords(textActions, true);
-        int[] rgbColor = hexStringToRGB(textActions.getString("color"));
-
-        PDFont font = PDType0Font.load(document, ASSET_MANAGER.open("fonts/" + fontName + ".ttf"));
-
+    private void drawText(String value, String fontName, int fontSize, String textAlign, int fieldSize, Integer[] coords, int[] rgbColor, PDFont font) throws NoSuchKeyException, IOException {
         int offsetLeft = coords[0];
 
         if (fieldSize > 0 && textAlign != "left") {
@@ -187,6 +195,12 @@ public class PDPageFactory {
         PDDocument document = new PDDocument();
         PDFont font = PDType0Font.load(document,
                 ASSET_MANAGER.open("fonts/" + fontName + ".ttf"));
+
+        return getTextSize(text, font, fontSize);
+    }
+
+    public static WritableMap getTextSize(String text, PDFont font, int fontSize)
+            throws IOException {
         float width = font.getStringWidth(text) / 1000 * fontSize;
         float height = (font.getFontDescriptor().getCapHeight()) / 1000 * fontSize;
         WritableMap map = Arguments.createMap();
