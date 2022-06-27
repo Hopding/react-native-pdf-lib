@@ -4,7 +4,7 @@
 
 ## Purpose
 
-This library's purpose is to fill the gap that currently exists in the React Native ecosystem for PDF creation and editing. It aims to provide an easy, simple, and consistent API for both **creating** new and **editing** existing PDF documents in React Native. This library supports Android devices >= API 18, and iOS devices >= iOS 8.0.
+This library's purpose is to fill the gap that currently exists in the React Native ecosystem for PDF creation and editing. It aims to provide an easy, simple, and consistent API for both **creating** new and **editing** existing PDF documents in React Native.
 
 ## Thanks
 
@@ -17,13 +17,18 @@ This library would not be possible without the following projects:
 
 Create PDFs from HTML: https://github.com/christopherdro/react-native-html-to-pdf
 
-## React Native Version
+## Requirements
 
-I recommend using the latest version of this library with React Native >= 60.
-Older versions are very slow, which is one of the reasons I've created this fork.
+### React Native Version
 
-If you're using React Native >= 60, you have to use v1.0.0+ of this library.
-If you're using React Native <= 59, you have to use v0.2.1 of this library.
+This library supports React Native versions greater or equal to 0.60.0
+Older may work, but I do not aim to support them.
+If you see any issue and you're using an old React Native version, plase upgrade and try again.
+
+### Adnroid API and iOS version
+
+This library supports Android devices >= API 31, and iOS devices >= iOS 8.0.
+Latest version that supported Android API 18 was 1.0.3
 
 ## Mostly automatic installation
 

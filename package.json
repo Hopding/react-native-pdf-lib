@@ -1,6 +1,6 @@
 {
   "name": "@shogobg/react-native-pdf",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "description": "A react native library for working with PDF files",
   "main": "index.js",
   "types": "index.d.ts",
@@ -21,27 +21,5 @@
     "assets": [
       "./assets"
     ]
-  },
-  "jest": {
-    "setupFiles": [
-      "./jest/jest-setup.js"
-    ],
-    "roots": [
-      "<rootDir>/js"
-    ]
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.2",
-    "babel-jest": "^22.4.0",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-react-native": "4.0.0"
-  },
-  "dependencies": {
-    "babel-preset-flow": "^6.23.0"
   }
 }
