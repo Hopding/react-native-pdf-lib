@@ -83,8 +83,7 @@ public class PDPageFactory {
             ReadableMap action = actions.getMap(i);
             String type = action.getString("type");
 
-            if (type.equals("text"))
-            {
+            if (type.equals("text")) {
                 String value = action.getString("value");
                 String fontName = action.getString("fontName");
                 int fontSize = action.getInt("fontSize");
@@ -94,13 +93,12 @@ public class PDPageFactory {
                 Integer[] coords = getCoords(action, true);
                 int[] rgbColor = hexStringToRGB(action.getString("color"));
 
-                if(!fonts.containsKey(fontName)){
+                if (!fonts.containsKey(fontName)) {
                     PDFont font = PDType0Font.load(document, ASSET_MANAGER.open("fonts/" + fontName + ".ttf"));
                     fonts.put(fontName, font);
                 }
                 this.drawText(value, fontName, fontSize, textAlign, fieldSize, coords, rgbColor, fonts.get(fontName));
-            }
-            else if (type.equals("rectangle"))
+            } else if (type.equals("rectangle"))
                 this.drawRectangle(action);
             else if (type.equals("image"))
                 this.drawImage(action);
@@ -113,11 +111,12 @@ public class PDPageFactory {
         page.setMediaBox(new PDRectangle(coords[0], coords[1], dims[0], dims[1]));
     }
 
-    private void drawText(String value, String fontName, int fontSize, String textAlign, int fieldSize, Integer[] coords, int[] rgbColor, PDFont font) throws NoSuchKeyException, IOException {
+    private void drawText(String value, String fontName, int fontSize, String textAlign, int fieldSize,
+            Integer[] coords, int[] rgbColor, PDFont font) throws NoSuchKeyException, IOException {
         int offsetLeft = coords[0];
 
         if (fieldSize > 0 && textAlign != "left") {
-            WritableMap textSize = PDPageFactory.getTextSize(value, fontName, fontSize, ASSET_MANAGER);
+            WritableMap textSize = PDPageFactory.getTextSize(value, font, fontSize);
 
             switch (textAlign) {
                 case "center":
