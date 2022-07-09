@@ -2,7 +2,7 @@
 
 [![NPM version][npm-image]][npm-url]
 
-## This is a fork which I made because original project seems unmaintained and I needed it to work with newer Reac-Native versions. There are also quite a few improvements, such as performance increase, bug fixes, stability improvement and new-functionality.
+## This is a fork which I made because original project seems unmaintained and I needed it to work with newer React-Native versions. There are also quite a few improvements, such as performance increase, bug fixes, stability improvement and new-functionality
 
 ## Purpose
 
