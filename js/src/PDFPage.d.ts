@@ -6,6 +6,7 @@ type TextAction = {
   fontSize: number;
   value: string;
 };
+
 type RectangleAction = {
   type: "rectangle";
   x: number;
@@ -14,6 +15,7 @@ type RectangleAction = {
   height: number;
   color: string;
 };
+
 type ImageAction = {
   type: "image";
   imagePath: string;
@@ -24,7 +26,9 @@ type ImageAction = {
   width?: number;
   height?: number;
 };
+
 type PageActions = TextAction | RectangleAction | ImageAction;
+
 type PageAction = {
   pageIndex?: number;
   mediaBox?: {
@@ -35,7 +39,8 @@ type PageAction = {
   };
   actions: PageActions[];
 };
-export default class PDFPage {
+
+export class PDFPage {
   static create: () => PDFPage;
   static modify: (pageIndex: any) => PDFPage;
   page: PageAction;
@@ -48,6 +53,9 @@ export default class PDFPage {
       y?: number;
       color?: string;
       fontSize?: number;
+      fieldSize?: number;
+      textAlign?: 'left' | 'right' | 'center';
+      fontName?: string;
   }) => PDFPage;
   drawRectangle: (options?: {
       x?: number;
@@ -64,4 +72,5 @@ export default class PDFPage {
       imageSource?: string;
   }) => PDFPage;
 }
-export {};
+
+export default {};

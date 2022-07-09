@@ -6,7 +6,7 @@ type DocumentAction = {
 /**
 * Here is some docs...
 */
-export default class PDFDocument {
+export class PDFDocument {
   /**
    * Create a new PDFDocument that will be written at the specified path
    * @param {string} path - The absolute file path for this document to be
@@ -22,4 +22,4 @@ export default class PDFDocument {
   addPages: (...pages: PDFPage[]) => PDFDocument;
   write: () => any;
 }
-export {};
+export default {};
