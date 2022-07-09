@@ -1,6 +1,8 @@
 # react-native-pdf
 
-## This is a fork which I made because original project seems unmaintained and I needed the updated code
+[![NPM version][npm-image]][npm-url]
+
+## This is a fork which I made because original project seems unmaintained and I needed it to work with newer Reac-Native versions. There are also quite a few improvements, such as performance increase, bug fixes, stability improvement and new-functionality.
 
 ## Purpose
 
@@ -300,3 +302,6 @@ return PDFLib.measureText(
 It is not possible to test changes to a native library independently of a runnable project.
 This library (and any react-native library with native code) depends on modules that will only exist if the library is built in the context of a full, runnable project.
 To test any changes, create a new react native project, and then clone the repository for react-native-pdf-lib into that project's node_modules directory. Next run react-native link on that project. Then, when you make changes to the library's code, you should be able to rebuild the runnable project to see the results.
+
+[npm-image]: https://img.shields.io/npm/v/@shogobg/react-native-pdf.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@shogobg/react-native-pdf
