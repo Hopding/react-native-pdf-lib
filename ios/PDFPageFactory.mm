@@ -140,7 +140,7 @@ void PDFPageFactory::drawText (NSDictionary* textActions) {
     NumberPair coords  = getCoords(textActions);
     unsigned hexColor  = hexIntFromString(textActions[@"color"]);
 
-    NSString *fontPath = [[NSBundle mainBundle] pathForResource:fontName ofType:@".ttf"];
+    NSString *fontPath = [[NSBundle mainBundle] pathForResource:fontName ofType:@".otf"];
     PDFUsedFont* font  = pdfWriter->GetFontForFile(fontPath.UTF8String);
 
     AbstractContentContext::TextOptions textOptions(font, fontSize, AbstractContentContext::eRGB, hexColor);
