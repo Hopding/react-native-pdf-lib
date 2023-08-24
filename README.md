@@ -1,4 +1,4 @@
-# react-native-pdf-lib
+# vi-react-native-pdf-lib
 
 ## Purpose
 
@@ -24,8 +24,8 @@ If you're using React Native <= 59, you want to use v0.2.1 of this library.
 
 See [here](https://github.com/Hopding/react-native-pdf-lib#manual-installation) for manual installation instructions (manual installation should not be necessary).
 
-1. `$ npm install react-native-pdf-lib --save`
-2. `$ react-native link react-native-pdf-lib`
+1. `$ npm install vi-react-native-pdf-lib --save`
+2. `$ react-native link vi-react-native-pdf-lib`
 3. For Android, add the following to your app's `build.gradle` file:
    ```
    android {
@@ -42,8 +42,8 @@ See [here](https://github.com/Hopding/react-native-pdf-lib#manual-installation) 
 ### Create a New PDF Document
 
 ```javascript
-// Import from 'react-native-pdf-lib'
-import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
+// Import from 'vi-react-native-pdf-lib'
+import PDFLib, { PDFDocument, PDFPage } from 'vi-react-native-pdf-lib';
 
 // Create a PDF page with text and rectangles
 const page1 = PDFPage
@@ -105,8 +105,8 @@ PDFDocument
 ### Modify an Existing PDF Document
 
 ```javascript
-// Import from 'react-native-pdf-lib'
-import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
+// Import from 'vi-react-native-pdf-lib'
+import PDFLib, { PDFDocument, PDFPage } from 'vi-react-native-pdf-lib';
 
 // Modify first page in document
 const page1 = PDFPage
@@ -225,7 +225,7 @@ return PDFLib.measureText(
 #### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-pdf-lib` and add `RNPdfLib.xcodeproj`
+2. Go to `node_modules` ➜ `vi-react-native-pdf-lib` and add `RNPdfLib.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNPdfLib.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
@@ -238,12 +238,12 @@ return PDFLib.measureText(
 
 2. Append the following lines to `android/settings.gradle`:
    ```
-   include ':react-native-pdf-lib'
-   project(':react-native-pdf-lib').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-pdf-lib/android')
+   include ':vi-react-native-pdf-lib'
+   project(':vi-react-native-pdf-lib').projectDir = new File(rootProject.projectDir, 	'../node_modules/vi-react-native-pdf-lib/android')
    ```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
    ```
-     compile project(':react-native-pdf-lib')
+     compile project(':vi-react-native-pdf-lib')
    ```
 4. For Android, add the following to your app's `build.gradle` file:
    ```
